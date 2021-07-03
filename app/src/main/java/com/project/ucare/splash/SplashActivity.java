@@ -24,6 +24,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
 
+        AndroidUtils.Companion.init(SplashActivity.this);
+        AndroidUtils.Companion.setStatusBarColor(R.color.white);
+
+
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
             @Override

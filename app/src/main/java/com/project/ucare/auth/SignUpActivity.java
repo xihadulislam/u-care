@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.auth.User;
 import com.project.ucare.R;
 import com.project.ucare.splash.SplashActivity;
+import com.xihad.androidutils.AndroidUtils;
 
 import java.util.regex.Pattern;
 
@@ -27,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     private static final String TAG = "SignUpActivity";
-    EditText name,email,password;
+    EditText name, email, password;
     Button signUpButton;
 
     ProgressBar progressBar;
@@ -36,21 +37,23 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        getSupportActionBar().hide();
 
-        name=findViewById(R.id.et_su_name);
-        email=findViewById(R.id.et_su_email);
-        password=findViewById(R.id.et_su_password);
-        signUpButton=findViewById(R.id.bt_su_signUp);
-        progressBar=findViewById(R.id.Pb_SignUp);
+        AndroidUtils.Companion.init(SignUpActivity.this);
+        AndroidUtils.Companion.setStatusBarColor(R.color.white);
+
+        name = findViewById(R.id.et_su_name);
+        email = findViewById(R.id.et_su_email);
+        password = findViewById(R.id.et_su_password);
+        signUpButton = findViewById(R.id.bt_su_signUp);
+        progressBar = findViewById(R.id.Pb_SignUp);
 
 
-        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +61,9 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-
-                String nam=name.getText().toString().trim();
-                String mail=email.getText().toString().trim();
-                String pass=password.getText().toString().trim();
+                String nam = name.getText().toString().trim();
+                String mail = email.getText().toString().trim();
+                String pass = password.getText().toString().trim();
 
                 if (nam.isEmpty()) {
                     name.setError("This field can not be blank");
@@ -84,7 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
 
                 }
-                if (pass.length()<6) {
+                if (pass.length() < 6) {
                     password.setError("must have more than 6 character");
                     return;
 
@@ -95,37 +97,31 @@ public class SignUpActivity extends AppCompatActivity {
                 signUpButton.setVisibility(View.INVISIBLE);
 
 
-                Log.d("email", "mail: "+mail);
-                Log.d("pass", "password: "+pass);
+                Log.d("email", "mail: " + mail);
+                Log.d("pass", "password: " + pass);
 
 
-
-
-
-                firebaseAuth.createUserWithEmailAndPassword(mail,pass).addOnCompleteListener(SignUpActivity.this,new OnCompleteListener<AuthResult>() {
+                firebaseAuth.createUserWithEmailAndPassword(mail, pass).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
 
+                        if (task.isSuccessful()) {
+                            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            Log.d("useId", "onComplete: " + userId);
+
+                            progressBar.setVisibility(View.GONE);
+                            signUpButton.setVisibility(View.VISIBLE);
 
 
-                            if (task.isSuccessful()){
-                                String userId=FirebaseAuth.getInstance().getCurrentUser().getUid();
-                                Log.d("useId", "onComplete: "+userId);
-
-                                progressBar.setVisibility(View.GONE);
-                                signUpButton.setVisibility(View.VISIBLE);
-
-
-                                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                                startActivity(intent);
-                            }
-                            else {
-                                progressBar.setVisibility(View.GONE);
-                                signUpButton.setVisibility(View.VISIBLE);
-                                Toast.makeText(SignUpActivity.this, task.toString(), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(SignUpActivity.this, "Failed To register ,try again", Toast.LENGTH_SHORT).show();
-                            }
+                            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                        } else {
+                            progressBar.setVisibility(View.GONE);
+                            signUpButton.setVisibility(View.VISIBLE);
+                            Toast.makeText(SignUpActivity.this, task.toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Failed To register ,try again", Toast.LENGTH_SHORT).show();
+                        }
 
                     }
                 });
@@ -133,7 +129,6 @@ public class SignUpActivity extends AppCompatActivity {
 
             }
         });
-
 
 
     }

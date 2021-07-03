@@ -9,10 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:gravity="center"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:padding="12dp"
 
@@ -21,6 +19,7 @@
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
             android:src="@drawable/applogo">
 
@@ -63,10 +62,10 @@
             android:id="@+id/bt_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="14dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="10dp"
+            android:padding="14dp"
             android:text="Login"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
@@ -84,11 +83,12 @@
             android:id="@+id/bt_google_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:padding="10dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:backgroundTint="@color/colorSecondary"
             android:drawableLeft="@drawable/common_google_signin_btn_icon_dark"
+            android:padding="10dp"
             android:text="Google Login"
             android:textColor="@android:color/white"
             android:textSize="16sp" />

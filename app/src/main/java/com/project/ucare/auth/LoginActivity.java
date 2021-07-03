@@ -35,7 +35,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
+
         AndroidUtils.Companion.init(LoginActivity.this);
+        AndroidUtils.Companion.setStatusBarColor(R.color.white);
+
 
         resisterText = findViewById(R.id.tv_register);
         email = findViewById(R.id.et_email);
