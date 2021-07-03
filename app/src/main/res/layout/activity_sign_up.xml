@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    tools:context=".auth.SignUpActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:orientation="vertical"
+
+        >
+        <EditText
+            android:id="@+id/et_su_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Name"
+            android:layout_margin="5dp"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:paddingStart="5dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/et_su_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Email"
+            android:layout_margin="5dp"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:paddingStart="5dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:singleLine="true"/>
+
+        <EditText
+            android:id="@+id/et_su_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingStart="5dp"
+            android:singleLine="true"/>
+
+
+
+        <RelativeLayout
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/bt_su_signUp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/button_gradient"
+                android:text="Sign Up"
+                android:textColor="@android:color/white"
+                android:visibility="visible"
+                android:textSize="16sp"/>
+
+            <ProgressBar
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/Pb_SignUp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                />
+
+        </RelativeLayout>
+
+
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -8,6 +8,7 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.project.ucare.R;
+import com.project.ucare.auth.SignUpActivity;
 import com.project.ucare.main.MainActivity;
 import com.xihad.androidutils.AndroidUtils;
 
@@ -24,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, SignUpActivity.class);
                 startActivity(intent);
             }
         }, 2000);
