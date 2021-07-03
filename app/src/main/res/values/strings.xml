@@ -2,6 +2,7 @@
     <string name="app_name">U Care</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_schedule">Schedules</string>
     <string name="title_notifications">Notifications</string>
+    <string name="todo">TODO</string>
 </resources>

@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="colorPrimary">#006EBF</color>
-    <color name="colorPrimaryVariant">#940032</color>
-    
+    <color name="colorSecondary">#940032</color>
+    <color name="colorPrimaryVariant">#025DA1</color>
+
 </resources>
