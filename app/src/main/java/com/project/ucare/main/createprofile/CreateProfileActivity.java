@@ -16,8 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
 import com.project.ucare.models.Profile;
@@ -137,31 +139,21 @@ public class CreateProfileActivity extends AppCompatActivity {
 
     private void saveData(String name, String date, String gender) {
 
-
         String id = String.valueOf(System.currentTimeMillis());
 
         Profile profile = new Profile(id, id, name, date, gender);
 
+        FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile).addOnCompleteListener(task -> {
 
-        FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-
+            if (task.isSuccessful()) {
                 Toast.makeText(CreateProfileActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
                 finish();
-
+            } else {
+                progressBar.setVisibility(View.GONE);
+                save.setVisibility(View.VISIBLE);
+                Toast.makeText(CreateProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                        progressBar.setVisibility(View.GONE);
-                        save.setVisibility(View.VISIBLE);
-                        Toast.makeText(CreateProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
+        });
 
 
     }
