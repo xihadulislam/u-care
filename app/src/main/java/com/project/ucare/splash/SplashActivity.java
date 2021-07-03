@@ -7,7 +7,10 @@ import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
+import com.project.ucare.auth.LoginActivity;
 import com.project.ucare.auth.SignUpActivity;
 import com.project.ucare.main.MainActivity;
 import com.xihad.androidutils.AndroidUtils;
@@ -25,8 +28,17 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, SignUpActivity.class);
-                startActivity(intent);
+
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
+                finish();
+
             }
         }, 2000);
 

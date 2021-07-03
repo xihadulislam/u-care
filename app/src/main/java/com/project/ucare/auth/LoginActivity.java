@@ -19,12 +19,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.ucare.R;
 import com.project.ucare.main.MainActivity;
+import com.xihad.androidutils.AndroidUtils;
 
 public class LoginActivity extends AppCompatActivity {
-    
+
     TextView resisterText;
-    EditText email,password;
-    Button loginButton,googleButton;
+    EditText email, password;
+    Button loginButton, googleButton;
     ProgressBar Pb_login;
 
     FirebaseAuth firebaseAuth;
@@ -34,79 +35,77 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        
-        resisterText=findViewById(R.id.tv_register);
-        email=findViewById(R.id.et_email);
-        password=findViewById(R.id.et_password);
-        
-        loginButton=findViewById(R.id.bt_login);
-        googleButton=findViewById(R.id.bt_google_login);
+        AndroidUtils.Companion.init(LoginActivity.this);
 
-        Pb_login=findViewById(R.id.Pb_login);
+        resisterText = findViewById(R.id.tv_register);
+        email = findViewById(R.id.et_email);
+        password = findViewById(R.id.et_password);
 
-        firebaseAuth=FirebaseAuth.getInstance();
+        loginButton = findViewById(R.id.bt_login);
+        googleButton = findViewById(R.id.bt_google_login);
 
-        
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Pb_login = findViewById(R.id.Pb_login);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
 
-                String mail=email.getText().toString().trim();
-                String pass=password.getText().toString().trim();
+        loginButton.setOnClickListener(v -> {
 
-                if (!Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
-                    email.setError("Please Provide valid email");
-                    return;
+            AndroidUtils.Companion.hideSoftKeyBoard();
 
-                }
-                if (mail.isEmpty()) {
-                    email.setError("This field can not be blank");
-                    return;
-                }
-                if (pass.isEmpty()) {
-                    password.setError("This field can not be blank");
-                    return;
+            String mail = email.getText().toString().trim();
+            String pass = password.getText().toString().trim();
 
-                }
-
-                Pb_login.setVisibility(View.VISIBLE);
-                loginButton.setVisibility(View.INVISIBLE);
-
-                firebaseAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-
-                            Pb_login.setVisibility(View.VISIBLE);
-                            loginButton.setVisibility(View.INVISIBLE);
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-                        else {
-                            Pb_login.setVisibility(View.VISIBLE);
-                            loginButton.setVisibility(View.INVISIBLE);
-                            Toast.makeText(LoginActivity.this, task.toString(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-
-
-
-
-
-
-
-
-
+            if (!Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
+                email.setError("Please Provide valid email");
+                return;
 
             }
+            if (mail.isEmpty()) {
+                email.setError("This field can not be blank");
+                return;
+            }
+            if (pass.isEmpty()) {
+                password.setError("This field can not be blank");
+                return;
+
+            }
+
+            Pb_login.setVisibility(View.VISIBLE);
+            loginButton.setVisibility(View.INVISIBLE);
+
+            logIn(mail, pass);
+
+
+            resisterText.setOnClickListener(v1 -> {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+
+            });
+
         });
-        
-        
-        
-        
-        
+
+
+    }
+
+    private void logIn(String mail, String pass) {
+        firebaseAuth.signInWithEmailAndPassword(mail, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+
+                    Pb_login.setVisibility(View.VISIBLE);
+                    loginButton.setVisibility(View.INVISIBLE);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Pb_login.setVisibility(View.VISIBLE);
+                    loginButton.setVisibility(View.INVISIBLE);
+                    Toast.makeText(LoginActivity.this, task.toString(), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
     }
 }

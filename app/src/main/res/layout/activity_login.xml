@@ -4,83 +4,129 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
     tools:context=".auth.LoginActivity">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:orientation="vertical"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="12dp"
 
-                >
+        >
 
-                    <EditText
-                        android:id="@+id/et_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:hint="Email"
-                        android:layout_margin="5dp"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:paddingTop="15dp"
-                        android:paddingBottom="15dp"
-                        android:paddingStart="5dp"
-                        android:singleLine="true"/>
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginBottom="30dp"
+            android:src="@drawable/applogo">
 
-                    <EditText
-                        android:id="@+id/et_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:hint="Password"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:paddingStart="5dp"
-                        android:paddingTop="15dp"
-                        android:paddingBottom="15dp"
-                        android:singleLine="true"/>
-                <ProgressBar
-                    android:id="@+id/Pb_login"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    />
+        </ImageView>
 
-                <Button
-                    android:id="@+id/bt_login"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="20dp"
-                    android:background="@drawable/button_gradient"
-                    android:text="Login"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"/>
 
-                <TextView
-                    android:id="@+id/tv_register"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="Register"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"/>
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_border"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:padding="14dp"
+            android:singleLine="true" />
 
-                <Button
-                    android:id="@+id/bt_google_login"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_margin="20dp"
-                    android:background="@drawable/button_gradient"
-                    android:text="Google Login"
-                    android:textColor="@android:color/white"
-                    android:drawableLeft="@drawable/common_google_signin_btn_icon_dark"
-                    android:textSize="16sp"/>
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/edittext_border"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:padding="14dp"
+            android:singleLine="true" />
 
-            </LinearLayout>
+        <ProgressBar
+            android:id="@+id/Pb_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/bt_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="14dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:text="Login"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Or"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/bt_google_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:padding="10dp"
+            android:layout_marginEnd="40dp"
+            android:backgroundTint="@color/colorSecondary"
+            android:drawableLeft="@drawable/common_google_signin_btn_icon_dark"
+            android:text="Google Login"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="You don't have any account?"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="  SignUp"
+            android:textColor="@color/colorSecondary"
+            android:textSize="16sp" />
+
+
+    </LinearLayout>
+
 
 </RelativeLayout>
