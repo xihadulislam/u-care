@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
 import com.project.ucare.createProfile.CreateProfileActivity;
 import com.project.ucare.models.Profile;
+import com.project.ucare.profileDetails.ProfileDetailsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements ProfileAdapter.ProfileListener {
 
     FloatingActionButton floatingActionButton;
 
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Set Adapter
         adapter = new ProfileAdapter(MainActivity.this);
+        adapter.setListener(MainActivity.this);
         recyclerView.setAdapter(adapter);
 
 
@@ -110,4 +112,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onProfileClicked(Profile profile) {
+
+        Intent intent = new Intent(MainActivity.this, ProfileDetailsActivity.class);
+        startActivity(intent);
+
+    }
 }
