@@ -1,32 +1,28 @@
-package com.project.ucare.main.schedule;
-
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+package com.project.ucare.profileDetails;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
-import com.project.ucare.main.home.ProfileAdapter;
-import com.project.ucare.models.Profile;
 import com.project.ucare.models.Schedule;
 
 import java.util.ArrayList;
 import java.util.List;
 
+public class ProfileDetailsActivity extends AppCompatActivity {
 
-public class ScheduleFragment extends Fragment {
 
     RecyclerView recyclerView;
 
@@ -36,31 +32,29 @@ public class ScheduleFragment extends Fragment {
 
     private List<Schedule> scheduleList = new ArrayList<>();
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile_details);
 
-        View root = inflater.inflate(R.layout.fragment_schedule, container, false);
+        progressBar = findViewById(R.id.progressBar);
+        recyclerView = findViewById(R.id.profileList);
+        noData = findViewById(R.id.noData);
 
 
-        progressBar = root.findViewById(R.id.progressBar);
-        recyclerView = root.findViewById(R.id.profileList);
-        noData = root.findViewById(R.id.noData);
-
-
-        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(ProfileDetailsActivity.this);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         //Set Adapter
-        adapter = new ScheduleAdapter(getActivity());
+        adapter = new ScheduleAdapter(ProfileDetailsActivity.this);
         recyclerView.setAdapter(adapter);
 
 
         getData();
 
 
-        return root;
     }
 
 
@@ -98,5 +92,6 @@ public class ScheduleFragment extends Fragment {
             }
         });
     }
+
 
 }
