@@ -48,6 +48,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_border"
                 android:hint="Name"
+                android:inputType="textCapWords"
                 android:padding="10dp">
 
             </EditText>
@@ -64,14 +65,14 @@
 
             <EditText
                 android:id="@+id/etBirthDate"
-                android:clickable="false"
-                android:cursorVisible="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/edittext_border"
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 android:hint="Birth date"
                 android:padding="10dp">
 
@@ -127,15 +128,16 @@
 
 
         <ProgressBar
-            android:visibility="gone"
             android:id="@+id/progressBar"
-            android:layout_margin="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_margin="20dp"
+            android:visibility="gone">
 
         </ProgressBar>
+
         <Button
             android:id="@+id/save"
             android:layout_width="match_parent"

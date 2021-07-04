@@ -117,7 +117,7 @@ public class CreateProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String name = etName.getText().toString().trim();
-                String date = etName.getText().toString().trim();
+                String date = etBirthDate.getText().toString().trim();
 
                 if (name.isEmpty()) {
                     etName.setError("Name is Required");

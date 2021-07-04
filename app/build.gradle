@@ -50,4 +50,6 @@ dependencies {
 
     implementation 'com.github.xihadulislam:androidUtils:1.0.5'
 
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 }
