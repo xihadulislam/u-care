@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.schedule.ScheduleFragment">
+    tools:context=".schedule.ScheduleActivity">
 
     <TextView
         android:id="@+id/noData"
@@ -37,4 +37,6 @@
 
 
     </androidx.recyclerview.widget.RecyclerView>
+
+
 </RelativeLayout>

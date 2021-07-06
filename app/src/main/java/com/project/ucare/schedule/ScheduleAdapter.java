@@ -1,4 +1,4 @@
-package com.project.ucare.main.schedule;
+package com.project.ucare.schedule;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
