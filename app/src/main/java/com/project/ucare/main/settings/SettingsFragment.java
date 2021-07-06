@@ -19,6 +19,11 @@ public class SettingsFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
+
+
+
         return root;
     }
 }
+
+// gtrtb
