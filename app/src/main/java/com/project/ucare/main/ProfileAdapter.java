@@ -1,7 +1,6 @@
-package com.project.ucare.main.home;
+package com.project.ucare.main;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
 
 
+    interface ProfileListener {
+        void onProfileClicked(Profile profile);
+    }
+
+
     private List<Profile> data;
 
     private Activity context;
@@ -28,6 +32,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
     public ProfileAdapter(Activity context) {
         this.context = context;
 
+    }
+
+    public static ProfileListener profileListener;
+
+    public void setListener(ProfileListener listener) {
+        profileListener = listener;
     }
 
     public void setList(List<Profile> data) {
@@ -53,7 +63,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         holder.labelName.setText(profile.getName());
         holder.labelDate.setText("Birth Date: " + profile.getBirth_date() + " || " + "Gender: " + profile.getGender());
         holder.iconText.setText(AndroidUtils.Companion.splitString(profile.getName(), 1));
-      //  holder.circleImageView.setCircleBackgroundColor(AndroidUtils.Companion.getRandomColor());
+        //  holder.circleImageView.setCircleBackgroundColor(AndroidUtils.Companion.getRandomColor());
+
+
+        holder.itemView.setOnClickListener(v -> {
+            if (profileListener != null) profileListener.onProfileClicked(profile);
+        });
 
     }
 
@@ -62,7 +77,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         return data == null ? 0 : data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView labelName;
         private TextView labelDate;
         private TextView iconText;
@@ -70,17 +85,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         public ViewHolder(View view) {
             super(view);
-            view.setOnClickListener(this);
             labelName = view.findViewById(R.id.labelName);
             labelDate = view.findViewById(R.id.labelDate);
             iconText = view.findViewById(R.id.iconText);
             circleImageView = view.findViewById(R.id.icon);
         }
 
-        @Override
-        public void onClick(View view) {
-
-        }
     }
 
 }
