@@ -66,7 +66,7 @@ public class ScheduleFragment extends Fragment {
 
     private void getData() {
 
-        FirebaseDatabase.getInstance().getReference().child("User").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Schedule").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
