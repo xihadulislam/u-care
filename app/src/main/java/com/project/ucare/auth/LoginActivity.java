@@ -24,11 +24,11 @@ import com.xihad.androidutils.AndroidUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView resisterText,forget_password;
+    TextView resisterText, forget_password;
     EditText email, password;
     Button loginButton, googleButton;
     ProgressBar Pb_login;
-   // jhgj
+    // jhgj
 
     FirebaseAuth firebaseAuth;
 
@@ -56,9 +56,18 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         resisterText.setOnClickListener(v1 -> {
-            Intent intent = new Intent(LoginActivity.this, AddMedicineActivity.class);
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
 
+        });
+        googleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                sinIn();
+
+
+            }
         });
 
         forget_password.setOnClickListener(v -> {
@@ -96,9 +105,12 @@ public class LoginActivity extends AppCompatActivity {
             logIn(mail, pass);
 
 
-
         });
 
+
+    }
+
+    private void sinIn() {
 
     }
 

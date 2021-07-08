@@ -22,7 +22,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
 
     private List<Profile> data;
-
     private Activity context;
 
     public ProfileAdapter(Activity context) {
@@ -33,6 +32,16 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
     public void setList(List<Profile> data) {
         this.data = data;
         notifyDataSetChanged();
+    }
+
+    interface ProfileListener {
+        void onProfileClick(Profile profile);
+    }
+
+    ProfileListener profileListener;
+
+    public void setProfileListener(ProfileListener profileListener) {
+        this.profileListener = profileListener;
     }
 
 
@@ -51,9 +60,18 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         Profile profile = data.get(position);
 
         holder.labelName.setText(profile.getName());
-        holder.labelDate.setText("Birth Date: " + profile.getBirth_date() + " || " + "Gender: " + profile.getGender());
+        holder.labelDate.setText("Birth Date: " + profile.getBirth_date() + " \n" + "Gender: " + profile.getGender());
         holder.iconText.setText(AndroidUtils.Companion.splitString(profile.getName(), 1));
-      //  holder.circleImageView.setCircleBackgroundColor(AndroidUtils.Companion.getRandomColor());
+        //  holder.circleImageView.setCircleBackgroundColor(AndroidUtils.Companion.getRandomColor());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (profileListener!=null){
+                    profileListener.onProfileClick(profile);
+                }
+            }
+        });
 
     }
 

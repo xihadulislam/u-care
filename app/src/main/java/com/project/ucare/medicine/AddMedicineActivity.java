@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 
@@ -63,7 +64,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     static final String[] typeList = {"Syrup", "Capsule", "Tablet"};
     private static final String[] unitListSyrup = {"1 tablespoon", "2 tablespoon", "3 tablespoon", "4 tablespoon", "5 tablespoon"};
     private static final String[] unitListCapsule = {"1", "2", "3"};
-    private static final String[] unitListTablet = {"1/4", "1/2", "3/2","1", "2"};
+    private static final String[] unitListTablet = {"1/4", "1/2", "3/2", "1", "2"};
     private static final String[] intakeList = {"1 hour before eating", "1hour after eating", "1/2 hour before eating", "1/2 hour after eating"};
 
     boolean satClicked = false;
@@ -81,7 +82,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     private int minutes;
     ArrayAdapter<String> adapterunit;
 
-    List<String> daysList=new ArrayList<>();
+    List<String> daysList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         spinnerUnit = findViewById(R.id.spinner_unit);
         spinnerIntake = findViewById(R.id.spinner_intake);
 
-        progressBar=findViewById(R.id.Pb_Addmed);
+        progressBar = findViewById(R.id.Pb_Addmed);
 
         TimePickerDialog.OnTimeSetListener mTimeSetListener =
                 new TimePickerDialog.OnTimeSetListener() {
@@ -389,7 +390,7 @@ public class AddMedicineActivity extends AppCompatActivity {
             }
 
 
-            if (sat.equals("not") && sun.equals("not") && mon.equals("not") && tue.equals("not") && wed.equals("not") && thu.equals("not") && fri.equals("not")){
+            if (sat.equals("not") && sun.equals("not") && mon.equals("not") && tue.equals("not") && wed.equals("not") && thu.equals("not") && fri.equals("not")) {
                 Toast.makeText(AddMedicineActivity.this, "You must select a day", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -398,44 +399,42 @@ public class AddMedicineActivity extends AppCompatActivity {
             saveButton.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
 
-            if (!sat.equals("not")){
+            if (!sat.equals("not")) {
                 daysList.add(sat);
             }
 
-            if (!sun.equals("not")){
+            if (!sun.equals("not")) {
                 daysList.add(sun);
             }
 
-            if (!mon.equals("not")){
+            if (!mon.equals("not")) {
                 daysList.add(mon);
             }
 
-            if (!tue.equals("not")){
+            if (!tue.equals("not")) {
                 daysList.add(tue);
             }
 
-            if (!wed.equals("not")){
+            if (!wed.equals("not")) {
                 daysList.add(wed);
             }
 
-            if (!thu.equals("not")){
+            if (!thu.equals("not")) {
                 daysList.add(thu);
             }
 
-            if (!fri.equals("not")){
+            if (!fri.equals("not")) {
                 daysList.add(fri);
             }
 
 
-
-            Log.d(TAG, "onCreate:all "+"medName: "+medName+"medType: "+spTypeTx+"meUnit: "+spUnitTx+"start date: "+startDate+"duration: "+medDuration+"medIntake: "+medIntake+"reminderTime: "+selectedTime+"selectedDate: "+daysList);
+            Log.d(TAG, "onCreate:all " + "medName: " + medName + "medType: " + spTypeTx + "meUnit: " + spUnitTx + "start date: " + startDate + "duration: " + medDuration + "medIntake: " + medIntake + "reminderTime: " + selectedTime + "selectedDate: " + daysList);
 
             String id = String.valueOf(System.currentTimeMillis());
-//            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
 
-            Schedule schedule=new Schedule(id,id,medName,spTypeTx,spUnitTx,startDate,medDuration,medIntake,selectedTime,daysList,true);
-
+            Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, selectedTime, daysList, true);
 
 
             FirebaseDatabase.getInstance().getReference().child("Schedule").child(id).setValue(schedule).addOnCompleteListener(task -> {
@@ -451,8 +450,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                     Toast.makeText(AddMedicineActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-
-
 
 
         });

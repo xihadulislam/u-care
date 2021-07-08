@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
 import com.project.ucare.models.Profile;
@@ -28,6 +29,7 @@ import com.xihad.androidutils.AndroidUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CreateProfileActivity extends AppCompatActivity {
 
@@ -140,10 +142,11 @@ public class CreateProfileActivity extends AppCompatActivity {
     private void saveData(String name, String date, String gender) {
 
         String id = String.valueOf(System.currentTimeMillis());
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-        Profile profile = new Profile(id, id, name, date, gender);
+        Profile profile = new Profile(id, userId, name, date, gender);
 
-        FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile).addOnCompleteListener(task -> {
+        FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(id).setValue(profile).addOnCompleteListener(task -> {
 
             if (task.isSuccessful()) {
                 Toast.makeText(CreateProfileActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();

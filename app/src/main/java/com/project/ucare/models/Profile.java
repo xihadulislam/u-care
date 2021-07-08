@@ -1,6 +1,8 @@
 package com.project.ucare.models;
 
-public class Profile {
+import java.io.Serializable;
+
+public class Profile  implements Serializable {
 
     String id;
     String parent_id;

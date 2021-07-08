@@ -1,8 +1,9 @@
 package com.project.ucare.models;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Schedule {
+public class Schedule implements Serializable {
     String id;
     String userId;
     String medicineName;
@@ -19,7 +20,10 @@ public class Schedule {
     public Schedule() {
     }
 
-    public Schedule(String id, String userId, String medicineName, String medicineType, String medicineUnit, String startDate, String duration, String intake, String reminderTime, List<String> days, boolean isEnable) {
+    public Schedule(String id, String userId, String medicineName, String medicineType,
+                    String medicineUnit, String startDate,
+                    String duration, String intake, String reminderTime,
+                    List<String> days, boolean isEnable) {
         this.id = id;
         this.userId = userId;
         this.medicineName = medicineName;
