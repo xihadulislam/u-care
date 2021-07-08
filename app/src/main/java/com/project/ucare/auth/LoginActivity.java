@@ -53,6 +53,11 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        resisterText.setOnClickListener(v1 -> {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
+
+        });
 
         loginButton.setOnClickListener(v -> {
 
@@ -82,11 +87,6 @@ public class LoginActivity extends AppCompatActivity {
             logIn(mail, pass);
 
 
-            resisterText.setOnClickListener(v1 -> {
-                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intent);
-
-            });
 
         });
 
