@@ -92,6 +92,15 @@
             android:text="Google Login"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
+        <TextView
+            android:id="@+id/forget_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgotten password?"
+            android:textColor="#FF0000"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            />
 
 
     </LinearLayout>

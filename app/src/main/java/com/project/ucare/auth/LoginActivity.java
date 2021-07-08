@@ -23,7 +23,7 @@ import com.xihad.androidutils.AndroidUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView resisterText;
+    TextView resisterText,forget_password;
     EditText email, password;
     Button loginButton, googleButton;
     ProgressBar Pb_login;
@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         resisterText = findViewById(R.id.tv_register);
+        forget_password = findViewById(R.id.forget_password);
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
 
@@ -58,6 +59,13 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
 
         });
+
+        forget_password.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
+
+        });
+
 
         loginButton.setOnClickListener(v -> {
 

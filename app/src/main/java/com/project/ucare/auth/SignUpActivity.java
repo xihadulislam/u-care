@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,6 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
 
+    TextView textViewLogin;
 
     FirebaseAuth firebaseAuth;
     String gender = "";
@@ -63,6 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.Pb_SignUp);
         rgGender = findViewById(R.id.Su_rgGender);
         etBirthDate = findViewById(R.id.Su_et_BirthDate);
+        textViewLogin = findViewById(R.id.Su_tv_register);
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -88,7 +91,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         };
 
-
         etBirthDate.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -98,6 +100,14 @@ public class SignUpActivity extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
+
+        textViewLogin.setOnClickListener(v1 -> {
+            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+            startActivity(intent);
+
+        });
+
 
 
         rgGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -126,6 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,20 +147,16 @@ public class SignUpActivity extends AppCompatActivity {
                 String pass = password.getText().toString().trim();
                 String date = etBirthDate.getText().toString().trim();
 
-
-                if (date.isEmpty()) {
-                    Toast.makeText(SignUpActivity.this, "Select a Date", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (gender.isEmpty()) {
-                    Toast.makeText(SignUpActivity.this, "Select a Gender", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if (nam.isEmpty()) {
                     name.setError("This field can not be blank");
                     return;
 
                 }
+                if (date.isEmpty()) {
+                    Toast.makeText(SignUpActivity.this, "Select a Date", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (!Patterns.EMAIL_ADDRESS.matcher(mail).matches()) {
                     email.setError("Please Provide valid email");
                     return;
@@ -170,6 +177,10 @@ public class SignUpActivity extends AppCompatActivity {
                     password.setError("must have more than 6 character");
                     return;
 
+                }
+                if (gender.isEmpty()) {
+                    Toast.makeText(SignUpActivity.this, "Select a Gender", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
 
