@@ -19,6 +19,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.ucare.R;
 import com.project.ucare.main.MainActivity;
+import com.project.ucare.medicine.AddMedicineActivity;
 import com.xihad.androidutils.AndroidUtils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         resisterText.setOnClickListener(v1 -> {
-            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            Intent intent = new Intent(LoginActivity.this, AddMedicineActivity.class);
             startActivity(intent);
 
         });

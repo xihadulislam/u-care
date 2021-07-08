@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UCare">
-        <activity android:name=".auth.ResetPasswordActivity"></activity>
+        <activity android:name=".medicine.AddMedicineActivity"></activity>
+        <activity android:name=".auth.ResetPasswordActivity" />
         <activity android:name=".schedule.ScheduleActivity" />
         <activity android:name=".auth.SignUpActivity" />
         <activity android:name=".auth.LoginActivity" />
