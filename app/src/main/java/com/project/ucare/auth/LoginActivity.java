@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText email, password;
     Button loginButton, googleButton;
     ProgressBar Pb_login;
+   // jhgj
 
     FirebaseAuth firebaseAuth;
 
