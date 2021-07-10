@@ -26,7 +26,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     public ProfileAdapter(Activity context) {
         this.context = context;
-
     }
 
     public void setList(List<Profile> data) {
@@ -35,7 +34,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
     }
 
     interface ProfileListener {
+
         void onProfileClick(Profile profile);
+
+        void onProfileLongClick(Profile profile,View view);
     }
 
     ProfileListener profileListener;
@@ -67,11 +69,22 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (profileListener!=null){
+                if (profileListener != null) {
                     profileListener.onProfileClick(profile);
                 }
             }
         });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (profileListener != null) {
+                    profileListener.onProfileLongClick(profile,v);
+                }
+                return true;
+            }
+        });
+
 
     }
 

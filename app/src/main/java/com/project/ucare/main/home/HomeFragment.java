@@ -1,13 +1,20 @@
 package com.project.ucare.main.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -185,4 +192,77 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
         startActivity(intent);
 
     }
+
+    @Override
+    public void onProfileLongClick(Profile profile, View view) {
+
+        PopupMenu popup = new PopupMenu(getActivity(), view, Gravity.RIGHT);
+        popup.inflate(R.menu.menu);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.edit) {
+                    return true;
+                } else if (itemId == R.id.delete) {
+                    askOptionToDelete(profile);
+                    return true;
+                }
+                return false;
+            }
+        });
+        popup.show();
+
+    }
+
+
+    private void askOptionToDelete(Profile profile) {
+
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getActivity())
+
+                .setTitle("Delete")
+                .setMessage("Do you want to Delete")
+                //  .setIcon(R.drawable.delete)
+
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+
+                        deleteProfile(profile);
+
+                        dialog.dismiss();
+                    }
+
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+
+        myQuittingDialogBox.show();
+
+    }
+
+    private void deleteProfile(Profile profile) {
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        FirebaseDatabase.getInstance().getReference().child("Profile")
+                .child(userId).child(profile.getId()).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+                    Toast.makeText(getActivity(), "Deleted Successful", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Deleted Unsuccessful, Try Again", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
+    }
+    
 }
