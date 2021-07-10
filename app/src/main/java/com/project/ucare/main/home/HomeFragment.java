@@ -97,6 +97,7 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CreateProfileActivity.class);
+                intent.putExtra("profile", "null");
                 startActivity(intent);
 
             }
@@ -158,23 +159,19 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if (snapshot.hasChildren()) {
+                progressBar.setVisibility(View.GONE);
 
-                    profileList.clear();
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        Profile profile = ds.getValue(Profile.class);
-                        profileList.add(profile);
-
-                    }
-                    progressBar.setVisibility(View.GONE);
-
-                    if (profileList.isEmpty()) {
-                        noData.setVisibility(View.VISIBLE);
-                    } else {
-                        noData.setVisibility(View.GONE);
-                    }
-                    adapter.setList(profileList);
+                profileList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Profile profile = ds.getValue(Profile.class);
+                    profileList.add(profile);
                 }
+                if (profileList.isEmpty()) {
+                    noData.setVisibility(View.VISIBLE);
+                } else {
+                    noData.setVisibility(View.GONE);
+                }
+                adapter.setList(profileList);
 
             }
 
@@ -203,6 +200,11 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.edit) {
+
+                    Intent intent = new Intent(getActivity(), CreateProfileActivity.class);
+                    intent.putExtra("profile", profile);
+                    startActivity(intent);
+
                     return true;
                 } else if (itemId == R.id.delete) {
                     askOptionToDelete(profile);
@@ -264,5 +266,5 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
         });
 
     }
-    
+
 }

@@ -47,7 +47,11 @@ public class ScheduleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_schedule);
 
 
-        profile = (Profile) getIntent().getSerializableExtra("profile");
+        try {
+            profile = (Profile) getIntent().getSerializableExtra("profile");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         floatingActionButton = findViewById(R.id.fab);
@@ -58,8 +62,10 @@ public class ScheduleActivity extends AppCompatActivity {
         labelName = findViewById(R.id.labelName);
 
 
-        labelName.setText(profile.getName());
-        iconText.setText(AndroidUtils.Companion.splitString(profile.getName(), 1));
+        if (profile!=null){
+            labelName.setText(profile.getName());
+            iconText.setText(AndroidUtils.Companion.splitString(profile.getName(), 1));
+        }
 
 
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(ScheduleActivity.this);

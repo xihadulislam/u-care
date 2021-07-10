@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     ProgressBar progressBar;
 
     String gender = "";
+    Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,16 @@ public class CreateProfileActivity extends AppCompatActivity {
         rgGender = findViewById(R.id.rgGender);
         save = findViewById(R.id.save);
         progressBar = findViewById(R.id.progressBar);
+
+
+        try {
+            profile = (Profile) getIntent().getSerializableExtra("profile");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        setEditData(profile);
 
 
         final Calendar myCalendar = Calendar.getInstance();
@@ -139,10 +151,39 @@ public class CreateProfileActivity extends AppCompatActivity {
 
     }
 
+    private void setEditData(Profile profile) {
+
+        if (profile != null) {
+
+            etName.setText(profile.getName());
+            etBirthDate.setText(profile.getBirth_date());
+
+            switch (profile.getGender()) {
+                case "Male":
+                    RadioButton radioButton = findViewById(R.id.rMale);
+                    radioButton.setChecked(true);
+                    gender = "Male";
+                    break;
+                case "Female":
+                    RadioButton radioButton2 = findViewById(R.id.rFemale);
+                    radioButton2.setChecked(true);
+                    gender = "Female";
+                    break;
+
+                case "Others":
+                    RadioButton radioButton3 = findViewById(R.id.rOthers);
+                    radioButton3.setChecked(true);
+                    gender = "Others";
+                    break;
+            }
+        }
+    }
+
     private void saveData(String name, String date, String gender) {
 
-        String id = String.valueOf(System.currentTimeMillis());
+        String id = getId();
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
 
         Profile profile = new Profile(id, userId, name, date, gender);
 
@@ -158,6 +199,15 @@ public class CreateProfileActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private String getId() {
+        String id = String.valueOf(System.currentTimeMillis());
+        if (profile != null) {
+            id = profile.getId();
+        }
+        return id;
 
     }
 
