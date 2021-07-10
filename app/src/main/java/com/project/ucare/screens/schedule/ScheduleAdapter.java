@@ -1,4 +1,4 @@
-package com.project.ucare.schedule;
+package com.project.ucare.screens.schedule;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -10,9 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.ucare.R;
-import com.project.ucare.models.Profile;
 import com.project.ucare.models.Schedule;
-import com.xihad.androidutils.AndroidUtils;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.project.ucare.splash;
+package com.project.ucare.screens.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,9 @@ import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
-import com.project.ucare.auth.LoginActivity;
-import com.project.ucare.auth.SignUpActivity;
-import com.project.ucare.main.MainActivity;
+import com.project.ucare.screens.auth.LoginActivity;
+import com.project.ucare.screens.main.MainActivity;
 import com.xihad.androidutils.AndroidUtils;
 
 

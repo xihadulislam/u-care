@@ -1,4 +1,4 @@
-package com.project.ucare.schedule;
+package com.project.ucare.screens.schedule;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
-import com.project.ucare.main.createprofile.CreateProfileActivity;
-import com.project.ucare.medicine.AddMedicineActivity;
+import com.project.ucare.screens.medicine.AddMedicineActivity;
 import com.project.ucare.models.Profile;
 import com.project.ucare.models.Schedule;
 import com.xihad.androidutils.AndroidUtils;

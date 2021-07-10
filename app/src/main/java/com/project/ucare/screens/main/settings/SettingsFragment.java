@@ -1,4 +1,4 @@
-package com.project.ucare.main.settings;
+package com.project.ucare.screens.main.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

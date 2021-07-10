@@ -1,4 +1,4 @@
-package com.project.ucare.auth;
+package com.project.ucare.screens.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,17 +23,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.auth.User;
 import com.project.ucare.R;
-import com.project.ucare.main.createprofile.CreateProfileActivity;
 import com.project.ucare.models.Profile;
-import com.project.ucare.splash.SplashActivity;
 import com.xihad.androidutils.AndroidUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 public class SignUpActivity extends AppCompatActivity {
 

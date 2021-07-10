@@ -1,4 +1,4 @@
-package com.project.ucare.auth;
+package com.project.ucare.screens.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,9 +9,8 @@ import com.project.ucare.R;
         import android.app.ProgressDialog;
         import android.content.Intent;
         import androidx.annotation.NonNull;
-        import androidx.appcompat.app.AppCompatActivity;
-        import android.os.Bundle;
-        import android.view.View;
+
+import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.Toast;

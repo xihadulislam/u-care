@@ -1,4 +1,4 @@
-package com.project.ucare.auth;
+package com.project.ucare.screens.auth;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.project.ucare.R;
-import com.project.ucare.main.MainActivity;
-import com.project.ucare.medicine.AddMedicineActivity;
+import com.project.ucare.screens.main.MainActivity;
 import com.xihad.androidutils.AndroidUtils;
 
 public class LoginActivity extends AppCompatActivity {

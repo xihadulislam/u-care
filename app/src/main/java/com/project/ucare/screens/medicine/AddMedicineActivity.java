@@ -1,8 +1,7 @@
-package com.project.ucare.medicine;
+package com.project.ucare.screens.medicine;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +23,6 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
-import com.project.ucare.auth.LoginActivity;
-import com.project.ucare.auth.SignUpActivity;
 import com.project.ucare.models.Schedule;
 import com.xihad.androidutils.AndroidUtils;
 

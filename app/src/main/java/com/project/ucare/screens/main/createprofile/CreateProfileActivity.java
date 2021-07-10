@@ -1,13 +1,10 @@
-package com.project.ucare.main.createprofile;
+package com.project.ucare.screens.main.createprofile;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,15 +14,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
 import com.project.ucare.models.Profile;
-import com.xihad.androidutils.AndroidUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

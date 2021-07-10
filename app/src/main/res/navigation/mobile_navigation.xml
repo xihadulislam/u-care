@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.project.ucare.main.home.HomeFragment"
+        android:name="com.project.ucare.screens.main.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_emergencyContact"
-        android:name="com.project.ucare.main.emergencyContact.EmergencyContactFragment"
+        android:name="com.project.ucare.screens.main.emergencyContact.EmergencyContactFragment"
         android:label="@string/title_emergency_contact"
         tools:layout="@layout/fragment_emergency_contact" />
 
     <fragment
         android:id="@+id/navigation_settings"
-        android:name="com.project.ucare.main.settings.SettingsFragment"
+        android:name="com.project.ucare.screens.main.settings.SettingsFragment"
         android:label="@string/title_settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

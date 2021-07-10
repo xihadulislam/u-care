@@ -1,4 +1,4 @@
-package com.project.ucare.main.home;
+package com.project.ucare.screens.main.home;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -32,11 +32,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
-import com.project.ucare.main.MainActivity;
-import com.project.ucare.main.createprofile.CreateProfileActivity;
+import com.project.ucare.models.Schedule;
+import com.project.ucare.screens.alarm.AlarmHandler;
+import com.project.ucare.screens.main.createprofile.CreateProfileActivity;
 import com.project.ucare.models.Profile;
-import com.project.ucare.schedule.ScheduleActivity;
-import com.project.ucare.splash.SplashActivity;
+import com.project.ucare.screens.schedule.ScheduleActivity;
 import com.xihad.androidutils.AndroidUtils;
 
 import java.util.ArrayList;
@@ -98,9 +98,19 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getActivity(), CreateProfileActivity.class);
                 intent.putExtra("profile", "null");
                 startActivity(intent);
+
+
+//                AlarmHandler handler = new AlarmHandler(getContext(), new Schedule());
+//
+//                Long time = System.currentTimeMillis() + 10000;
+//
+//                handler.startAlarm(time);
+
+                Log.d("qqq", "floatingActionButton:  call");
 
             }
         });

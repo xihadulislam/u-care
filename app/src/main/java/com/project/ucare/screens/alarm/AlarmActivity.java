@@ -1,4 +1,4 @@
-package com.project.ucare.alarm;
+package com.project.ucare.screens.alarm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
