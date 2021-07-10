@@ -230,7 +230,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 //        String id = String.valueOf(System.currentTimeMillis());
 
-        Profile profile = new Profile(id, "", name, date, gender);
+        Profile profile = new Profile(id, "", name, date, gender,System.currentTimeMillis());
 
         FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile).addOnCompleteListener(task -> {
 

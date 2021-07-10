@@ -185,7 +185,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
 
-        Profile profile = new Profile(id, userId, name, date, gender);
+        Profile profile = new Profile(id, userId, name, date, gender,System.currentTimeMillis());
 
         FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(id).setValue(profile).addOnCompleteListener(task -> {
 

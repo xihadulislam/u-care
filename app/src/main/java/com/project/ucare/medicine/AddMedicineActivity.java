@@ -27,6 +27,7 @@ import com.project.ucare.R;
 import com.project.ucare.auth.LoginActivity;
 import com.project.ucare.auth.SignUpActivity;
 import com.project.ucare.models.Schedule;
+import com.xihad.androidutils.AndroidUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,6 +89,8 @@ public class AddMedicineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_medicine);
+
+        AndroidUtils.Companion.init(this);
 
         tvSat = findViewById(R.id.sat);
         tvSun = findViewById(R.id.sun);
@@ -431,18 +434,24 @@ public class AddMedicineActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate:all " + "medName: " + medName + "medType: " + spTypeTx + "meUnit: " + spUnitTx + "start date: " + startDate + "duration: " + medDuration + "medIntake: " + medIntake + "reminderTime: " + selectedTime + "selectedDate: " + daysList);
 
             String id = String.valueOf(System.currentTimeMillis());
-            String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
+            String userId = "";
 
-            Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, selectedTime, daysList, true);
+            if (AndroidUtils.sharePrefSettings.getStringValue("pro").equalsIgnoreCase("")) {
+                userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+            } else {
+                userId = AndroidUtils.sharePrefSettings.getStringValue("pro");
+            }
 
+            Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, selectedTime, daysList, true, System.currentTimeMillis());
 
-            FirebaseDatabase.getInstance().getReference().child("Schedule").child(id).setValue(schedule).addOnCompleteListener(task -> {
+            FirebaseDatabase.getInstance().getReference().child("Schedule").child(userId).child(id).setValue(schedule).addOnCompleteListener(task -> {
 
                 if (task.isSuccessful()) {
                     Toast.makeText(AddMedicineActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
                     saveButton.setVisibility(View.VISIBLE);
                     progressBar.setVisibility(View.GONE);
+                    finish();
 
                 } else {
                     saveButton.setVisibility(View.VISIBLE);
@@ -450,7 +459,6 @@ public class AddMedicineActivity extends AppCompatActivity {
                     Toast.makeText(AddMedicineActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-
 
         });
 

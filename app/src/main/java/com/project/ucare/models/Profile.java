@@ -2,23 +2,34 @@ package com.project.ucare.models;
 
 import java.io.Serializable;
 
-public class Profile  implements Serializable {
+public class Profile implements Serializable {
 
     String id;
     String parent_id;
     String name;
     String birth_date;
     String gender;
+    Long updatedTime;
+
 
     public Profile() {
     }
 
-    public Profile(String id, String parent_id, String name, String birth_date, String gender) {
+    public Profile(String id, String parent_id, String name, String birth_date, String gender, Long updatedTime) {
         this.id = id;
         this.parent_id = parent_id;
         this.name = name;
         this.birth_date = birth_date;
         this.gender = gender;
+        this.updatedTime = updatedTime;
+    }
+
+    public Long getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Long updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
     public String getId() {

@@ -37,7 +37,7 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/edittext_border"
                 android:hint="Name"
-                android:inputType="textEmailAddress"
+                android:inputType="textCapWords"
                 android:maxLines="1"
                 android:padding="14dp"
                 android:singleLine="true" />

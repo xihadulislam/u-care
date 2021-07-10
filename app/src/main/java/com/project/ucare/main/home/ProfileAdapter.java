@@ -58,13 +58,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         AndroidUtils.Companion.init(context);
-
         Profile profile = data.get(position);
 
         holder.labelName.setText(profile.getName());
         holder.labelDate.setText("Birth Date: " + profile.getBirth_date() + " \n" + "Gender: " + profile.getGender());
         holder.iconText.setText(AndroidUtils.Companion.splitString(profile.getName(), 1));
-        //  holder.circleImageView.setCircleBackgroundColor(AndroidUtils.Companion.getRandomColor());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +91,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         return data == null ? 0 : data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder  {
         private TextView labelName;
         private TextView labelDate;
         private TextView iconText;
@@ -101,17 +99,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         public ViewHolder(View view) {
             super(view);
-            view.setOnClickListener(this);
             labelName = view.findViewById(R.id.labelName);
             labelDate = view.findViewById(R.id.labelDate);
             iconText = view.findViewById(R.id.iconText);
             circleImageView = view.findViewById(R.id.icon);
         }
 
-        @Override
-        public void onClick(View view) {
-
-        }
     }
 
 }

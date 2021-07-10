@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.ucare.R;
+import com.project.ucare.models.Profile;
 import com.project.ucare.models.Schedule;
 import com.xihad.androidutils.AndroidUtils;
 
@@ -41,8 +43,14 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        AndroidUtils.Companion.init(context);
         Schedule schedule = data.get(position);
+
+
+        holder.labelName.setText(schedule.getMedicineName());
+        holder.labelIntake.setText(schedule.getIntake());
+        holder.labelUnit.setText("Unit : "+schedule.getMedicineUnit());
+        holder.labelReminder.setText(schedule.getReminderTime());
+
 
     }
 
@@ -51,18 +59,23 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         return data == null ? 0 : data.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView labelName;
+        private TextView labelIntake;
+        private TextView labelUnit;
+        private TextView labelReminder;
 
         public ViewHolder(View view) {
             super(view);
-            view.setOnClickListener(this);
+
+            labelName = view.findViewById(R.id.labelName);
+            labelIntake = view.findViewById(R.id.labelIntake);
+            labelUnit = view.findViewById(R.id.labelUnit);
+            labelReminder = view.findViewById(R.id.labelReminder);
 
         }
 
-        @Override
-        public void onClick(View view) {
 
-        }
     }
 }

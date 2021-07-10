@@ -67,6 +67,8 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        AndroidUtils.Companion.init(getActivity());
+
 
         floatingActionButton = root.findViewById(R.id.fab);
         progressBar = root.findViewById(R.id.progressBar);
@@ -144,10 +146,9 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
                 Intent intent = new Intent(getActivity(), ScheduleActivity.class);
                 intent.putExtra("profile", profile);
                 startActivity(intent);
-
+                AndroidUtils.sharePrefSettings.setStringValue("pro", "");
             }
         });
-
 
     }
 
@@ -184,6 +185,9 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
 
     @Override
     public void onProfileClick(Profile profile) {
+
+        AndroidUtils.sharePrefSettings.setStringValue("pro", profile.getId());
+
         Intent intent = new Intent(getActivity(), ScheduleActivity.class);
         intent.putExtra("profile", profile);
         startActivity(intent);
@@ -224,7 +228,7 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
 
                 .setTitle("Delete")
                 .setMessage("Do you want to Delete")
-                //  .setIcon(R.drawable.delete)
+                .setIcon(R.drawable.ic_baseline_delete_24)
 
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
@@ -260,7 +264,6 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
                 } else {
                     Toast.makeText(getActivity(), "Deleted Unsuccessful, Try Again", Toast.LENGTH_SHORT).show();
                 }
-
 
             }
         });

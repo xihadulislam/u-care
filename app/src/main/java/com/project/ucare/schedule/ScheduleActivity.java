@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,6 +27,7 @@ import com.xihad.androidutils.AndroidUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -62,7 +64,7 @@ public class ScheduleActivity extends AppCompatActivity {
         labelName = findViewById(R.id.labelName);
 
 
-        if (profile!=null){
+        if (profile != null) {
             labelName.setText(profile.getName());
             iconText.setText(AndroidUtils.Companion.splitString(profile.getName(), 1));
         }
@@ -94,28 +96,35 @@ public class ScheduleActivity extends AppCompatActivity {
 
     private void getData() {
 
-        FirebaseDatabase.getInstance().getReference().child("Schedule").addValueEventListener(new ValueEventListener() {
+
+        String userId = "";
+
+        if (AndroidUtils.sharePrefSettings.getStringValue("pro").equalsIgnoreCase("")) {
+            userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        } else {
+            userId = AndroidUtils.sharePrefSettings.getStringValue("pro");
+        }
+
+        FirebaseDatabase.getInstance().getReference().child("Schedule").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 scheduleList.clear();
-                if (snapshot.hasChildren()) {
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        Schedule schedule = ds.getValue(Schedule.class);
-                        scheduleList.add(schedule);
 
-                    }
-                    progressBar.setVisibility(View.GONE);
-
-                    if (scheduleList.isEmpty()) {
-                        noData.setVisibility(View.VISIBLE);
-                    } else {
-                        noData.setVisibility(View.GONE);
-                    }
-
-                    adapter.setList(scheduleList);
-
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Schedule schedule = ds.getValue(Schedule.class);
+                    scheduleList.add(schedule);
                 }
+                progressBar.setVisibility(View.GONE);
+
+                if (scheduleList.isEmpty()) {
+                    noData.setVisibility(View.VISIBLE);
+                } else {
+                    noData.setVisibility(View.GONE);
+                }
+
+                adapter.setList(scheduleList);
+
 
             }
 
