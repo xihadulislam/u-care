@@ -24,6 +24,7 @@ public class AlarmHandler {
         this.context = context;
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent = new Intent(context, MyBroadCastReceiver.class);
+      //  alarmIntent.setAction(Intent.ACTION_BOOT_COMPLETED);
         alarmIntent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         alarmIntent.putExtra("schedule", new Gson().toJson(schedule));
 

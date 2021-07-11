@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
 
     <application
         android:name=".MyApplication"
@@ -15,7 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UCare">
-        <activity android:name=".screens.alarm.AlarmActivity" />
+        <activity android:name=".screens.alarm.AlarmActivity" >
+
+        </activity>
         <activity android:name=".screens.medicine.AddMedicineActivity" />
         <activity android:name=".screens.auth.ResetPasswordActivity" />
         <activity android:name=".screens.schedule.ScheduleActivity" />
@@ -41,7 +44,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
