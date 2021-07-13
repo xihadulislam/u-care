@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -118,11 +119,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    SharedPreferences.Editor prefs = LoginActivity.this.getSharedPreferences("login", MODE_PRIVATE).edit();
+                    prefs.putString("mail", mail);
+                    prefs.putString("pass", pass);
+                    prefs.apply();
 
                     Pb_login.setVisibility(View.VISIBLE);
                     loginButton.setVisibility(View.INVISIBLE);
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     Pb_login.setVisibility(View.VISIBLE);
                     loginButton.setVisibility(View.INVISIBLE);

@@ -130,6 +130,7 @@ public class ScheduleActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 progressBar.setVisibility(View.GONE);
+
             }
         });
     }
