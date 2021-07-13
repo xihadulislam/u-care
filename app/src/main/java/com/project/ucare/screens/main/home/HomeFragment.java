@@ -99,14 +99,9 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
             @Override
             public void onClick(View v) {
 
-//                Intent intent = new Intent(getActivity(), CreateProfileActivity.class);
-//                intent.putExtra("profile", "null");
-//                startActivity(intent);
-
-
-                AlarmHandler handler = new AlarmHandler(getContext(), new Schedule());
-                Long time = System.currentTimeMillis() + 5000;
-                handler.startAlarm(time);
+                Intent intent = new Intent(getActivity(), CreateProfileActivity.class);
+                intent.putExtra("profile", "null");
+                startActivity(intent);
 
                 Log.d("qqq", "floatingActionButton:  call");
 

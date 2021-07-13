@@ -12,6 +12,7 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 import com.project.ucare.R;
+import com.project.ucare.models.Schedule;
 
 import static android.app.Notification.DEFAULT_SOUND;
 import static android.app.Notification.DEFAULT_VIBRATE;
@@ -21,12 +22,14 @@ public class NotificationHelper extends ContextWrapper {
     public static final String channelID = "channelID1";
     public static final String channelName = "Channel Name";
     private NotificationManager mManager;
+    private Schedule schedule;
 
-    public NotificationHelper(Context base) {
+    public NotificationHelper(Context base,Schedule schedule) {
         super(base);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
         }
+        this.schedule = schedule;
     }
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -48,19 +51,20 @@ public class NotificationHelper extends ContextWrapper {
 
 
         Intent fullScreenIntent = new Intent(this, AlarmActivity.class);
+        fullScreenIntent.putExtra("schedule", schedule);
         PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0,
                 fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         Intent actionSn = new Intent(this, NotificationActionReceiver.class);
-        actionSn.putExtra("id", 1);
+        actionSn.putExtra("id", schedule.getAlarm().getId());
         actionSn.putExtra("type", "snooze");
         PendingIntent actionSnPendingIntent = PendingIntent.getBroadcast(this, 0,
                 actionSn, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         Intent actionTake = new Intent(this, NotificationActionReceiver.class);
-        actionTake.putExtra("id", 1);
+        actionTake.putExtra("id", schedule.getAlarm().getId());
         actionTake.putExtra("type", "taking_now");
         PendingIntent actionTakePendingIntent = PendingIntent.getBroadcast(this, 0,
                 actionTake, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -70,8 +74,8 @@ public class NotificationHelper extends ContextWrapper {
                 //  .setTimeoutAfter(2000)
                 .addAction(R.mipmap.ic_launcher, "Snooze", actionSnPendingIntent)
                 .addAction(R.mipmap.ic_launcher, "Taking Now", actionTakePendingIntent)
-                .setContentTitle("Alarm!")
-                .setContentText("Your AlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\nAlarmManager is working.\n")
+                .setContentTitle(schedule.getMedicineName())
+                .setContentText(schedule.getIntake())
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setAutoCancel(false)
                 .setSound(null)

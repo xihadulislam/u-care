@@ -18,8 +18,10 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.google.gson.Gson;
 import com.project.ucare.R;
 import com.project.ucare.common.Utils;
+import com.project.ucare.models.Schedule;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -31,13 +33,21 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("qqq", "onReceive:  call");
 
-        NotificationHelper notificationHelper = new NotificationHelper(context);
-        NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
-        notificationHelper.getManager().notify(1, nb.build());
+        Schedule schedule = new Gson().fromJson(intent.getStringExtra("schedule"), Schedule.class);
 
-        Utils.playRing(context);
+        if (schedule!=null){
+            NotificationHelper notificationHelper = new NotificationHelper(context,schedule);
+            NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
+            notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());
+
+            Utils.playRing(context);
+        }
+
+        Log.d("qqq", "onReceive:  call " +schedule.getId());
+
+
+
     }
 
 

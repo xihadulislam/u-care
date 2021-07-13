@@ -1,20 +1,43 @@
 package com.project.ucare.models;
 
 
-public class Alarm {
+import java.io.Serializable;
+import java.util.List;
 
-    private String name;
+public class Alarm  implements Serializable {
+
+    private String title;
     private int hour;
-    private int minunte;
-    private String date;
-    private int itemID;
+    private int minute;
+    private int id;
+    List<String> days;
 
-    public String getName() {
-        return name;
+    public Alarm() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+
+    public Alarm(String title, int hour, int minute, int id, List<String> days) {
+        this.title = title;
+        this.hour = hour;
+        this.minute = minute;
+        this.id = id;
+        this.days = days;
+    }
+
+    public List<String> getDays() {
+        return days;
+    }
+
+    public void setDays(List<String> days) {
+        this.days = days;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getHour() {
@@ -25,25 +48,21 @@ public class Alarm {
         this.hour = hour;
     }
 
-    public int getMinunte() {
-        return minunte;
+    public int getMinute() {
+        return minute;
     }
 
-    public void setMinunte(int minunte) {
-        this.minunte = minunte;
+    public void setMinute(int minute) {
+        this.minute = minute;
     }
 
-    public String getDate() {
-        return date;
+    public int getId() {
+        return id;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getItemID() { return itemID; }
 
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
-    }
 }

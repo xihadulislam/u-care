@@ -23,7 +23,9 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
+import com.project.ucare.models.Alarm;
 import com.project.ucare.models.Schedule;
+import com.project.ucare.screens.alarm.AlarmHandler;
 import com.xihad.androidutils.AndroidUtils;
 
 import java.text.SimpleDateFormat;
@@ -82,6 +84,8 @@ public class AddMedicineActivity extends AppCompatActivity {
 
     List<String> daysList = new ArrayList<>();
 
+    Alarm alarm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +124,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         // TODO Auto-generated method stub
+
                         hour = hourOfDay;
                         minutes = minute;
                         String timeSet = "";
@@ -146,6 +151,9 @@ public class AddMedicineActivity extends AppCompatActivity {
                                 .append(min).append(" ").append(timeSet).toString();
                         etTimePicker.setText(aTime);
                         selectedTime = aTime;
+
+                        alarm = new Alarm(aTime, hourOfDay, minute, 1, new ArrayList<>());
+
                         if (selectedTime != "") {
                             Linear_days.setVisibility(View.VISIBLE);
                         } else {
@@ -440,7 +448,16 @@ public class AddMedicineActivity extends AppCompatActivity {
                 userId = AndroidUtils.sharePrefSettings.getStringValue("pro");
             }
 
-            Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, selectedTime, daysList, true, System.currentTimeMillis());
+
+            String alar = new StringBuilder(id).reverse().toString();
+
+            String alarmId = AndroidUtils.Companion.splitString(alar, 6);
+
+            alarm.setId(Integer.parseInt(alarmId));
+            alarm.setDays(daysList);
+
+
+            Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, true, System.currentTimeMillis(), alarm);
 
             FirebaseDatabase.getInstance().getReference().child("Schedule").child(userId).child(id).setValue(schedule).addOnCompleteListener(task -> {
 
@@ -456,6 +473,10 @@ public class AddMedicineActivity extends AppCompatActivity {
                     Toast.makeText(AddMedicineActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+
+            AlarmHandler handler = new AlarmHandler(this, schedule);
+            handler.startAlarm(alarm.getHour(),alarm.getMinute());
+
 
         });
 

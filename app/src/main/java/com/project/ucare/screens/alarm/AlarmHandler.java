@@ -5,11 +5,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.project.ucare.models.Schedule;
 
+import java.util.Calendar;
 import java.util.Random;
 
 public class AlarmHandler {
@@ -24,22 +26,29 @@ public class AlarmHandler {
         this.context = context;
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent alarmIntent = new Intent(context, MyBroadCastReceiver.class);
-      //  alarmIntent.setAction(Intent.ACTION_BOOT_COMPLETED);
+        //  alarmIntent.setAction(Intent.ACTION_BOOT_COMPLETED);
         alarmIntent.setFlags(Intent.FLAG_RECEIVER_FOREGROUND);
         alarmIntent.putExtra("schedule", new Gson().toJson(schedule));
-
-        pendingIntent = PendingIntent.getBroadcast(context, new Random().nextInt(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(context, schedule.getAlarm().getId(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 
-    public void startAlarm(Long triggerAt) {
+    public void startAlarm(int hour, int min) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, min);
+
+        Log.d("qqq", "startAlarm: " + calendar.getTimeInMillis() + " " + hour + " " + min);
+
+        long time = calendar.getTimeInMillis() - 36000;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAt, pendingIntent);
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerAt, pendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
         } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, triggerAt, pendingIntent);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
         }
 
     }

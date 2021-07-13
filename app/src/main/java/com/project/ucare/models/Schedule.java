@@ -12,18 +12,15 @@ public class Schedule implements Serializable {
     String startDate;
     String duration;
     String intake;
-    String reminderTime;
-    List<String> days;
     boolean isEnable;
     Long updatedTime;
-
+    Alarm alarm;
 
 
     public Schedule() {
     }
 
-
-    public Schedule(String id, String userId, String medicineName, String medicineType, String medicineUnit, String startDate, String duration, String intake, String reminderTime, List<String> days, boolean isEnable, Long updatedTime) {
+    public Schedule(String id, String userId, String medicineName, String medicineType, String medicineUnit, String startDate, String duration, String intake, boolean isEnable, Long updatedTime, Alarm alarm) {
         this.id = id;
         this.userId = userId;
         this.medicineName = medicineName;
@@ -32,18 +29,9 @@ public class Schedule implements Serializable {
         this.startDate = startDate;
         this.duration = duration;
         this.intake = intake;
-        this.reminderTime = reminderTime;
-        this.days = days;
         this.isEnable = isEnable;
         this.updatedTime = updatedTime;
-    }
-
-    public Long getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Long updatedTime) {
-        this.updatedTime = updatedTime;
+        this.alarm = alarm;
     }
 
     public String getId() {
@@ -110,28 +98,28 @@ public class Schedule implements Serializable {
         this.intake = intake;
     }
 
-    public String getReminderTime() {
-        return reminderTime;
-    }
-
-    public void setReminderTime(String reminderTime) {
-        this.reminderTime = reminderTime;
-    }
-
-    public List<String> getDays() {
-        return days;
-    }
-
-    public void setDays(List<String> days) {
-        this.days = days;
-    }
-
     public boolean isEnable() {
         return isEnable;
     }
 
     public void setEnable(boolean enable) {
         isEnable = enable;
+    }
+
+    public Long getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Long updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public Alarm getAlarm() {
+        return alarm;
+    }
+
+    public void setAlarm(Alarm alarm) {
+        this.alarm = alarm;
     }
 }
 

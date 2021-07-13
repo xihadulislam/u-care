@@ -33,7 +33,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SettingsFragment extends Fragment {
 
-    TextView feedBack,deleteAccount,logOut;
+    TextView feedBack, deleteAccount, logOut;
 
     private FirebaseAuth firebaseAuth;
 
@@ -42,10 +42,9 @@ public class SettingsFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
         listRingtones();
-        feedBack=root.findViewById(R.id.feedBack);
-        deleteAccount=root.findViewById(R.id.deleteAccount);
-        logOut=root.findViewById(R.id.logOut);
-
+        feedBack = root.findViewById(R.id.feedBack);
+        deleteAccount = root.findViewById(R.id.deleteAccount);
+        logOut = root.findViewById(R.id.logOut);
 
 
         feedBack.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +68,7 @@ public class SettingsFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 //your deleting code
 
-                               deleteAccount();
+                                deleteAccount();
 
                                 dialog.dismiss();
                             }
@@ -92,13 +91,11 @@ public class SettingsFragment extends Fragment {
                 FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
                     @Override
                     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        if (firebaseAuth.getCurrentUser() == null){
+                        if (firebaseAuth.getCurrentUser() == null) {
                             //Do anything here which needs to be done after signout is complete
-                           Intent intent=new Intent(getContext(), LoginActivity.class);
-                           startActivity(intent);
-                           getActivity().finish();
-                        }
-                        else {
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            startActivity(intent);
+                            getActivity().finish();
                         }
                     }
                 };
@@ -125,6 +122,7 @@ public class SettingsFragment extends Fragment {
 
         startActivity(Intent.createChooser(intent, "Send Feedback"));
     }
+
     public void composeEmail() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:" + "ucare.project101@gmail.com"));
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Feedback from Ucare");
@@ -133,6 +131,7 @@ public class SettingsFragment extends Fragment {
         startActivity(Intent.createChooser(emailIntent, "Send Feedback"));
 
     }
+
     public void listRingtones() {
         RingtoneManager manager = new RingtoneManager(getActivity());
         manager.setType(RingtoneManager.TYPE_RINGTONE);
@@ -142,7 +141,7 @@ public class SettingsFragment extends Fragment {
             String uri = cursor.getString(RingtoneManager.URI_COLUMN_INDEX);
             // Do something with the title and the URI of ringtone
 
-            Log.d("TAG", "listRingtones: "+title +"        "+uri);
+            Log.d("TAG", "listRingtones: " + title + "        " + uri);
 
 
         }
@@ -151,19 +150,19 @@ public class SettingsFragment extends Fragment {
     public void pickRingtone(View view) {
         // TODO Auto-generated method.   stub
 
-        Intent intent = new  Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE,
                 RingtoneManager.TYPE_RINGTONE);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Ringtone");
 
         // for existing ringtone
-        Uri uri =     RingtoneManager.getActualDefaultRingtoneUri(
+        Uri uri = RingtoneManager.getActualDefaultRingtoneUri(
                 getContext(), RingtoneManager.TYPE_RINGTONE);
         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, uri);
 
         startActivityForResult(intent, 5);
 
-        Log.d(TAG, "pickRingtone: "+uri);
+        Log.d(TAG, "pickRingtone: " + uri);
 
     }
 
@@ -176,11 +175,10 @@ public class SettingsFragment extends Fragment {
     private void deleteAccount() {
 
 
-
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         SharedPreferences prefs = getContext().getSharedPreferences("login", MODE_PRIVATE);
-       String mail= prefs.getString("mail","0");
-       String pass =prefs.getString("pass","0");
+        String mail = prefs.getString("mail", "0");
+        String pass = prefs.getString("pass", "0");
         // Get auth credentials from the user for re-authentication. The example below shows
         // email and password credentials but there are multiple possible providers,
         // such as GoogleAuthProvider or FacebookAuthProvider.
@@ -197,7 +195,7 @@ public class SettingsFragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Intent intent =new Intent(getContext(),LoginActivity.class);
+                                            Intent intent = new Intent(getContext(), LoginActivity.class);
                                             startActivity(intent);
                                             getActivity().finish();
                                             Log.d(TAG, "User account deleted.");

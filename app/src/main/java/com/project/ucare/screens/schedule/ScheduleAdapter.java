@@ -46,8 +46,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
         holder.labelName.setText(schedule.getMedicineName());
         holder.labelIntake.setText(schedule.getIntake());
-        holder.labelUnit.setText("Unit : "+schedule.getMedicineUnit());
-        holder.labelReminder.setText(schedule.getReminderTime());
+        holder.labelUnit.setText("Unit : " + schedule.getMedicineUnit());
+        holder.labelReminder.setText(schedule.getAlarm().getTitle());
 
 
     }

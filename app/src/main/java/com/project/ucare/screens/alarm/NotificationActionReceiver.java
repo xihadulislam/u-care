@@ -12,7 +12,9 @@ public class NotificationActionReceiver  extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Utils.cancelNotification(context, 1);
+        int id = intent.getIntExtra("id",1);
+
+        Utils.cancelNotification(context, id);
         Utils.stopRing();
 
         String type = intent.getStringExtra("type");
