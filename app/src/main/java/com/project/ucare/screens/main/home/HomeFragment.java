@@ -32,9 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
+import com.project.ucare.common.Utils;
 import com.project.ucare.db.ProfileHandler;
-import com.project.ucare.models.Schedule;
-import com.project.ucare.screens.alarm.AlarmHandler;
 import com.project.ucare.screens.main.createprofile.CreateProfileActivity;
 import com.project.ucare.models.Profile;
 import com.project.ucare.screens.schedule.ScheduleActivity;
@@ -110,6 +109,11 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
 
             }
         });
+
+
+        Log.d("TAG", "onCreateView: "+ Utils.dateToString(Utils.incrementDateByOne(Utils.stringToDate("07/14/21"))));
+
+        Log.d("TAG", "onCreateView: vvarfd "+Utils.isDateValid("07/18/21"));
 
 
         return root;
