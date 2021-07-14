@@ -40,9 +40,9 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
             NotificationHelper notificationHelper = new NotificationHelper(context,schedule);
             NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
             notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());
-
             Utils.playRing(context);
         }
+
 
         Log.d("qqq", "onReceive:  call " +schedule.getId());
 

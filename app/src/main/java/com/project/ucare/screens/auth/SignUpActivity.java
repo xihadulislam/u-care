@@ -24,6 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
+import com.project.ucare.db.ProfileHandler;
 import com.project.ucare.models.Profile;
 import com.xihad.androidutils.AndroidUtils;
 
@@ -45,6 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     String gender = "";
     RadioGroup rgGender;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +107,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
 
-
         rgGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @SuppressLint("NonConstantResourceId")
             @Override
@@ -129,8 +130,6 @@ public class SignUpActivity extends AppCompatActivity {
 
             }
         });
-
-
 
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -180,8 +179,6 @@ public class SignUpActivity extends AppCompatActivity {
                 }
 
 
-
-
                 progressBar.setVisibility(View.VISIBLE);
                 signUpButton.setVisibility(View.INVISIBLE);
 
@@ -198,9 +195,7 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             Log.d("useId", "onComplete: " + userId);
-                            saveData(userId,nam, date, gender);
-
-
+                            saveData(userId, nam, date, gender);
 
 
                         } else {
@@ -221,12 +216,16 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
-
     private void saveData(String id, String name, String date, String gender) {
 
 //        String id = String.valueOf(System.currentTimeMillis());
 
-        Profile profile = new Profile(id, "", name, date, gender,System.currentTimeMillis());
+        Profile profile = new Profile(id, "", name, date, gender, System.currentTimeMillis());
+
+
+        ProfileHandler handler = new ProfileHandler(this);
+
+        long result = handler.addProfile(profile);
 
         FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile).addOnCompleteListener(task -> {
 

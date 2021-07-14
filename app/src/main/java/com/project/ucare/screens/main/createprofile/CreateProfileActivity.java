@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
-import com.project.ucare.db.DataBaseHandler;
+import com.project.ucare.db.ProfileHandler;
 import com.project.ucare.models.Profile;
 
 import java.text.SimpleDateFormat;
@@ -178,16 +178,18 @@ public class CreateProfileActivity extends AppCompatActivity {
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
 
-        Profile profile = new Profile(id, userId, name, date, gender,System.currentTimeMillis());
+        Profile profile = new Profile(id, userId, name, date, gender, System.currentTimeMillis());
 
-        DataBaseHandler dataBaseHandler=new DataBaseHandler(CreateProfileActivity.this);
-        dataBaseHandler.addProfile(profile);
+        ProfileHandler handler = new ProfileHandler(this);
 
+       long result =   handler.addProfile(profile);
+
+       if (result>0) Toast.makeText(this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
 
         FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(id).setValue(profile).addOnCompleteListener(task -> {
 
             if (task.isSuccessful()) {
-                Toast.makeText(CreateProfileActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(CreateProfileActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
                 progressBar.setVisibility(View.GONE);

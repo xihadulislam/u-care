@@ -32,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
+import com.project.ucare.db.ProfileHandler;
 import com.project.ucare.models.Schedule;
 import com.project.ucare.screens.alarm.AlarmHandler;
 import com.project.ucare.screens.main.createprofile.CreateProfileActivity;
@@ -59,6 +60,8 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
 
     ConstraintLayout profileRoot;
 
+    ProfileHandler handler;
+
 
     private List<Profile> profileList = new ArrayList<>();
 
@@ -68,6 +71,7 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         AndroidUtils.Companion.init(getActivity());
+        handler = new ProfileHandler(getActivity());
 
 
         floatingActionButton = root.findViewById(R.id.fab);
@@ -92,8 +96,7 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
         recyclerView.setAdapter(adapter);
 
 
-        getProfile();
-        getData();
+        // getProfile();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,11 +115,13 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
         return root;
     }
 
+    private void getLocalProfile() {
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        setProfile(handler.getProfileByID(userId));
+    }
 
     private void getProfile() {
-
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-
         FirebaseDatabase.getInstance().getReference().child("User").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -137,23 +142,46 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
 
     private void setProfile(Profile profile) {
 
+        if (profile != null) {
+            rootView.setVisibility(View.VISIBLE);
+            labelName.setText(profile.getName());
+            labelDate.setText("Birth Date: " + profile.getBirth_date() + " || " + "Gender: " + profile.getGender());
+            iconText.setText(AndroidUtils.Companion.splitString(profile.getName(), 1));
 
-        rootView.setVisibility(View.VISIBLE);
-        labelName.setText(profile.getName());
-        labelDate.setText("Birth Date: " + profile.getBirth_date() + " || " + "Gender: " + profile.getGender());
-        iconText.setText(AndroidUtils.Companion.splitString(profile.getName(), 1));
-
-        profileRoot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ScheduleActivity.class);
-                intent.putExtra("profile", profile);
-                startActivity(intent);
-                AndroidUtils.sharePrefSettings.setStringValue("pro", "");
-            }
-        });
+            profileRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), ScheduleActivity.class);
+                    intent.putExtra("profile", profile);
+                    startActivity(intent);
+                    AndroidUtils.sharePrefSettings.setStringValue("pro", "");
+                }
+            });
+        }
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getLocalProfile();
+        getLocalData();
+
+    }
+
+    private void getLocalData() {
+
+        profileList = handler.getProfileList(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        progressBar.setVisibility(View.GONE);
+        if (profileList.isEmpty()) {
+            noData.setVisibility(View.VISIBLE);
+        } else {
+            noData.setVisibility(View.GONE);
+        }
+        adapter.setList(profileList);
+
+    }
+
 
     private void getData() {
 
@@ -224,7 +252,6 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
 
     }
 
-
     private void askOptionToDelete(Profile profile) {
 
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getActivity())
@@ -238,7 +265,9 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
                     public void onClick(DialogInterface dialog, int whichButton) {
                         //your deleting code
 
+                        handler.deleteProfile(profile.getId());
                         deleteProfile(profile);
+                        getLocalData();
 
                         dialog.dismiss();
                     }
