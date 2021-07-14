@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.project.ucare.R;
+import com.project.ucare.db.DataBaseHandler;
+import com.project.ucare.screens.main.createprofile.CreateProfileActivity;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
@@ -139,8 +141,11 @@ public class EmergencyContactFragment extends Fragment {
 
     @Override
     public void onResume() {
+        DataBaseHandler dataBaseHandler=new DataBaseHandler(getContext());
+
         getSharePref();
         setFetches();
+        dataBaseHandler.getAlarms();
         super.onResume();
     }
 

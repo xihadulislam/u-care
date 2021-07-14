@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
+import com.project.ucare.db.DataBaseHandler;
 import com.project.ucare.models.Profile;
 
 import java.text.SimpleDateFormat;
@@ -178,6 +179,10 @@ public class CreateProfileActivity extends AppCompatActivity {
 
 
         Profile profile = new Profile(id, userId, name, date, gender,System.currentTimeMillis());
+
+        DataBaseHandler dataBaseHandler=new DataBaseHandler(CreateProfileActivity.this);
+        dataBaseHandler.addProfile(profile);
+
 
         FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(id).setValue(profile).addOnCompleteListener(task -> {
 

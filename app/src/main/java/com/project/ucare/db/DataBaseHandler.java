@@ -1,86 +1,133 @@
-//package com.project.ucare.db;
-//
-//import android.content.ContentValues;
-//import android.content.Context;
-//import android.database.Cursor;
-//import android.database.sqlite.SQLiteDatabase;
-//import android.database.sqlite.SQLiteOpenHelper;
-//
-//import com.project.ucare.models.Alarm;
-//
-//import java.util.ArrayList;
-//import java.util.Date;
-//
-//
-//public class DataBaseHandler extends SQLiteOpenHelper {
-//
-//    public static final String DATABASE_NAME = "alarmdb";
-//    public static final int DATABASE_VERSION = 2;
-//    public static final String TABLE_NAME = "alarms_table";
-//    public static final String ALARM_NAME = "alarm_name";
-//    public static final String ALARM_HOUR = "alarm_hour";
-//    public static final String ALARM_MIN = "alarm_min";
-//    public static final String ALARM_DATE = "alarm_date";
-//    public static final String KEY_ID = "_id";
-//
-//
-//    private final ArrayList<Alarm> AlarmList = new ArrayList<>();
-//
-//    public DataBaseHandler(Context context) {
-//        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-//    }
-//
-//    @Override
-//    public void onCreate(SQLiteDatabase db) {
-//        //Creating tables
-//        String CREATE_ALARMS_TABLE = "CREATE TABLE " + TABLE_NAME + "("
-//                + KEY_ID + " INTEGER PRIMARY KEY, "
-//                + ALARM_NAME + " TEXT, "
-//                + ALARM_HOUR + " INT, "
-//                + ALARM_MIN + " INT, "
-//                + ALARM_DATE + " LONG);";
-//
-//        db.execSQL(CREATE_ALARMS_TABLE);
-//
-//    }
-//
-//    @Override
-//    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        // drop old one
-//        db.execSQL("DROP TABLE IF EXITS" + TABLE_NAME);
-//
-//        // create new
-//        onCreate(db);
-//
-//    }
-//
-//    // delete an alarm
-//    public void deleteAlarm(int id) {
-//
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete(TABLE_NAME, KEY_ID + " = ? ",
-//                new String[]{String.valueOf(id)});
-//        db.close();
-//
-//    }
-//
-//    //adding content to table
-//    public void addAlarm(Alarm alarm) {
-//
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(ALARM_NAME, alarm.getName());
-//        values.put(ALARM_HOUR, alarm.getHour());
-//        values.put(ALARM_MIN, alarm.getMinunte());
-//        values.put(ALARM_DATE, System.currentTimeMillis());
-//
-//        db.insert(TABLE_NAME, null, values);
-//        db.close();
-//
-//    }
-//
-//    //get all alarms
+package com.project.ucare.db;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
+import com.google.firebase.firestore.auth.User;
+import com.project.ucare.models.Alarm;
+import com.project.ucare.models.Profile;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+
+public class DataBaseHandler extends SQLiteOpenHelper {
+
+    public static final String DATABASE_NAME = "ucare";
+    public static final int DATABASE_VERSION = 1;
+    public static final String TABLE_NAME_CREATE_PROFILE = "create_profile";
+    public static final String USER_NAME = "user_name";
+    public static final String BIRTH_DATE = "birth_date";
+    public static final String USER_GENDER = "user_gender";
+    public static final String KEY_ID = "id";
+    public static final String PARENT_ID = "parent_id";
+    public static final String  UPDATED_TIME= "updated_time";
+    Context context;
+
+
+    private final ArrayList<Profile> profileList = new ArrayList<>();
+
+    public DataBaseHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context=context;
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        //Creating tables
+        String CREATE_PROFILE_TABLE = "CREATE TABLE " + TABLE_NAME_CREATE_PROFILE + " ("
+                + KEY_ID + " TEXT PRIMARY KEY, "
+                + PARENT_ID + " TEXT, "
+                + USER_NAME + " TEXT, "
+                + BIRTH_DATE + " TEXT, "
+                + USER_GENDER + " TEXT, "
+                + UPDATED_TIME + " TEXT)";
+
+
+
+        db.execSQL(CREATE_PROFILE_TABLE);
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // drop old one
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_CREATE_PROFILE);
+
+        // create new
+        onCreate(db);
+
+    }
+
+    // delete an alarm
+    public void deleteAlarm(int id) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NAME_CREATE_PROFILE, KEY_ID + " = ? ",
+                new String[]{String.valueOf(id)});
+        db.close();
+
+    }
+
+    //adding content to table
+    public void addProfile(Profile profile) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, profile.getId());
+        values.put(PARENT_ID, profile.getParent_id());
+        values.put(USER_NAME, profile.getName());
+        values.put(USER_GENDER, profile.getGender());
+        values.put(BIRTH_DATE, profile.getBirth_date());
+        values.put(UPDATED_TIME, profile.getUpdatedTime().toString());
+
+
+        long result= db.insert(TABLE_NAME_CREATE_PROFILE, null, values);
+
+        Toast.makeText(context, "res "+result, Toast.LENGTH_SHORT).show();
+        db.close();
+
+    }
+
+
+    //get all alarms
+    public ArrayList<Profile> getAlarms() {
+
+        profileList.clear();
+
+        //String selectQuery = "SELECT * FROM " +  TABLE_NAME;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME_CREATE_PROFILE, new String[]{KEY_ID,
+                        PARENT_ID,USER_NAME, BIRTH_DATE, USER_GENDER, UPDATED_TIME},
+                null, null, null, null, KEY_ID + " ASC ");
+
+        // loop through cursor
+        if (cursor.moveToFirst()) {
+            do {
+                Profile profile = new Profile();
+                profile.setName(cursor.getString(cursor.getColumnIndex(USER_NAME)));
+
+                Toast.makeText(context, "cursor "+cursor.getString(cursor.getColumnIndex(USER_NAME)), Toast.LENGTH_SHORT).show();
+
+                profileList.add(profile);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return profileList;
+    }
+
+    //get all alarms
 //    public ArrayList<Alarm> getAlarms() {
 //
 //        AlarmList.clear();
@@ -117,5 +164,5 @@
 //
 //        return AlarmList;
 //    }
-//
-//}
+
+}
