@@ -36,17 +36,50 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
 
         Schedule schedule = new Gson().fromJson(intent.getStringExtra("schedule"), Schedule.class);
 
-        if (schedule!=null){
-            NotificationHelper notificationHelper = new NotificationHelper(context,schedule);
+        if (schedule != null) {
+            NotificationHelper notificationHelper = new NotificationHelper(context, schedule);
             NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
             notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());
             Utils.playRing(context);
+
+            //   startAgain(context, schedule);
+
         }
 
+        Log.d("qqq", "onReceive:  call " + schedule.getId());
 
-        Log.d("qqq", "onReceive:  call " +schedule.getId());
+
+    }
 
 
+    void startAgain(Context context, Schedule schedule) {
+
+        String endDate = Utils.dateToString(Utils.incrementDate(Utils.stringToDate(schedule.getStartDate()), Integer.parseInt(schedule.getDuration())));
+
+        Log.d("qqq", "startAgain: " + endDate);
+
+        if (Utils.isDateValid(schedule.getStartDate()) && !Utils.isDateValid(endDate)) {
+            Log.d("qqq", "startAgain:  valid");
+            boolean flag = false;
+            for (String day : schedule.getAlarm().getDays()) {
+                if (Utils.getToday().equalsIgnoreCase(day)) {
+                    flag = true;
+                }
+            }
+            if (flag) {
+                Log.d("qqq", "startAgain:  flag " + flag);
+                AlarmHandler handler = new AlarmHandler(context, schedule);
+                handler.startNextAlarm(schedule.getAlarm().getHour(), schedule.getAlarm().getMinute());
+
+            } else {
+
+                Log.d("qqq", "startAgain:  flag " + flag);
+            }
+
+
+        } else {
+            Log.d("qqq", "startAgain:  not  valid");
+        }
 
     }
 

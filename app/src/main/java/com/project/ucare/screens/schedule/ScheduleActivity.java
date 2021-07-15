@@ -1,6 +1,5 @@
 package com.project.ucare.screens.schedule;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,11 +13,8 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
+import com.project.ucare.db.ScheduleHandler;
 import com.project.ucare.screens.medicine.AddMedicineActivity;
 import com.project.ucare.models.Profile;
 import com.project.ucare.models.Schedule;
@@ -41,6 +37,10 @@ public class ScheduleActivity extends AppCompatActivity {
     Profile profile;
 
     FloatingActionButton floatingActionButton;
+    ScheduleHandler scheduleHandler;
+    String userId = "";
+
+    private List<Schedule> scheduleListData = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,13 @@ public class ScheduleActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        if (AndroidUtils.sharePrefSettings.getStringValue("pro").equalsIgnoreCase("")) {
+            userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        } else {
+            userId = AndroidUtils.sharePrefSettings.getStringValue("pro");
+        }
+
+        scheduleHandler = new ScheduleHandler(this);
 
         floatingActionButton = findViewById(R.id.fab);
         progressBar = findViewById(R.id.progressBar);
@@ -79,9 +86,6 @@ public class ScheduleActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-        getData();
-
-
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,46 +97,25 @@ public class ScheduleActivity extends AppCompatActivity {
 
     }
 
-    private void getData() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLocalData();
+    }
 
+    private void getLocalData() {
 
-        String userId = "";
+        scheduleListData = scheduleHandler.getSchedules(userId);
+        progressBar.setVisibility(View.GONE);
 
-        if (AndroidUtils.sharePrefSettings.getStringValue("pro").equalsIgnoreCase("")) {
-            userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        if (scheduleListData.isEmpty()) {
+            noData.setVisibility(View.VISIBLE);
         } else {
-            userId = AndroidUtils.sharePrefSettings.getStringValue("pro");
+            noData.setVisibility(View.GONE);
         }
 
-        FirebaseDatabase.getInstance().getReference().child("Schedule").child(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        adapter.setList(scheduleListData);
 
-                scheduleList.clear();
-
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Schedule schedule = ds.getValue(Schedule.class);
-                    scheduleList.add(schedule);
-                }
-                progressBar.setVisibility(View.GONE);
-
-                if (scheduleList.isEmpty()) {
-                    noData.setVisibility(View.VISIBLE);
-                } else {
-                    noData.setVisibility(View.GONE);
-                }
-
-                adapter.setList(scheduleList);
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                progressBar.setVisibility(View.GONE);
-
-            }
-        });
     }
 
 }

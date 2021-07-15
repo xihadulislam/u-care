@@ -31,7 +31,7 @@ public class CreateProfileActivity extends AppCompatActivity {
     EditText etName, etBirthDate;
     RadioGroup rgGender;
     Button save;
-    ProgressBar progressBar;
+    //   ProgressBar progressBar;
 
     String gender = "";
     Profile profile;
@@ -47,7 +47,7 @@ public class CreateProfileActivity extends AppCompatActivity {
         etBirthDate = findViewById(R.id.etBirthDate);
         rgGender = findViewById(R.id.rgGender);
         save = findViewById(R.id.save);
-        progressBar = findViewById(R.id.progressBar);
+        //  progressBar = findViewById(R.id.progressBar);
 
 
         try {
@@ -133,8 +133,8 @@ public class CreateProfileActivity extends AppCompatActivity {
                 } else if (gender.isEmpty()) {
                     Toast.makeText(CreateProfileActivity.this, "Select a Gender", Toast.LENGTH_SHORT).show();
                 } else {
-                    save.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    //   progressBar.setVisibility(View.VISIBLE);
                     saveData(name, date, gender);
                 }
 
@@ -177,27 +177,15 @@ public class CreateProfileActivity extends AppCompatActivity {
         String id = getId();
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-
         Profile profile = new Profile(id, userId, name, date, gender, System.currentTimeMillis());
+        FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(id).setValue(profile);
 
         ProfileHandler handler = new ProfileHandler(this);
-
-       long result =   handler.addProfile(profile);
-
-       if (result>0) Toast.makeText(this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
-
-        FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(id).setValue(profile).addOnCompleteListener(task -> {
-
-            if (task.isSuccessful()) {
-               // Toast.makeText(CreateProfileActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                progressBar.setVisibility(View.GONE);
-                save.setVisibility(View.VISIBLE);
-                Toast.makeText(CreateProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        long result = handler.addProfile(profile);
+        if (result > 0) {
+            Toast.makeText(this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
+            finish();
+        }
 
     }
 

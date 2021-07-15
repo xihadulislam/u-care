@@ -50,8 +50,28 @@ public class AlarmHandler {
         } else {
             alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
         }
-
     }
+
+    public void startNextAlarm(int hour, int min) {
+        Calendar calendar = Calendar.getInstance();
+        // calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, min);
+        calendar.add(Calendar.DATE, 1);
+
+        Log.d("qqq", "startAlarm: " + calendar.getTimeInMillis() + " " + hour + " " + min);
+
+        long time = calendar.getTimeInMillis() - 36000;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+        }
+    }
+
 
     public void cancelAlarm() {
         alarmManager.cancel(pendingIntent);

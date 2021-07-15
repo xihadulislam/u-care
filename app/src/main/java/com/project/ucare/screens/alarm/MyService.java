@@ -29,25 +29,13 @@ public class MyService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
 
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//
-//        Intent alarmIntent = new Intent(this, MyBroadCastReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, 0, 10000, pendingIntent);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        Log.d("qqq", "onHandleIntent:  call");
-
-//        Intent intent1 = new Intent(this, AlarmActivity.class);
-//        intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent1.setAction("com.newsportal.NewsDetailsActivity.INTENT");
-//        startActivity(intent1);
-
-
-
+        Intent alarmIntent = new Intent(this, MyBroadCastReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, 0, 10000, pendingIntent);
 
     }
-
-
 
 
 }

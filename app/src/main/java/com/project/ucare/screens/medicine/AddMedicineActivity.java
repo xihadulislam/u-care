@@ -23,7 +23,10 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
+import com.project.ucare.db.ProfileHandler;
+import com.project.ucare.db.ScheduleHandler;
 import com.project.ucare.models.Alarm;
+import com.project.ucare.models.Profile;
 import com.project.ucare.models.Schedule;
 import com.project.ucare.screens.alarm.AlarmHandler;
 import com.xihad.androidutils.AndroidUtils;
@@ -379,7 +382,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 return;
             }
 
-            if (startDate == "") {
+            if (startDate.equals("")) {
                 Toast.makeText(AddMedicineActivity.this, "Start date can not be null ", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -392,7 +395,7 @@ public class AddMedicineActivity extends AppCompatActivity {
                 Toast.makeText(AddMedicineActivity.this, "Intake time can not be null ", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (selectedTime == "") {
+            if (selectedTime.equals("")) {
                 Toast.makeText(AddMedicineActivity.this, "reminder time can not be null ", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -459,27 +462,26 @@ public class AddMedicineActivity extends AppCompatActivity {
 
             Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, true, System.currentTimeMillis(), alarm);
 
-            FirebaseDatabase.getInstance().getReference().child("Schedule").child(userId).child(id).setValue(schedule).addOnCompleteListener(task -> {
-
-                if (task.isSuccessful()) {
-                    Toast.makeText(AddMedicineActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
-                    saveButton.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                    finish();
-
-                } else {
-                    saveButton.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(AddMedicineActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+            FirebaseDatabase.getInstance().getReference().child("Schedule").child(id).setValue(schedule);
 
             AlarmHandler handler = new AlarmHandler(this, schedule);
-            handler.startAlarm(alarm.getHour(),alarm.getMinute());
+            handler.startAlarm(alarm.getHour(), alarm.getMinute());
 
+            ScheduleHandler handlerSchedule = new ScheduleHandler(this);
+            long result = handlerSchedule.addSchedule(schedule);
+
+            if (result > 0) {
+                Toast.makeText(AddMedicineActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
+                saveButton.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                finish();
+            } else {
+                saveButton.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(AddMedicineActivity.this, "Data Updated Failed", Toast.LENGTH_SHORT).show();
+            }
 
         });
-
 
     }
 }

@@ -178,25 +178,17 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
 
-
                 progressBar.setVisibility(View.VISIBLE);
                 signUpButton.setVisibility(View.INVISIBLE);
-
-
-                Log.d("email", "mail: " + mail);
-                Log.d("pass", "password: " + pass);
-
 
                 firebaseAuth.createUserWithEmailAndPassword(mail, pass).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
-
                         if (task.isSuccessful()) {
                             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                             Log.d("useId", "onComplete: " + userId);
                             saveData(userId, nam, date, gender);
-
 
                         } else {
                             progressBar.setVisibility(View.GONE);
@@ -215,33 +207,25 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
-
     private void saveData(String id, String name, String date, String gender) {
-
-//        String id = String.valueOf(System.currentTimeMillis());
 
         Profile profile = new Profile(id, "", name, date, gender, System.currentTimeMillis());
 
+        FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile);
 
         ProfileHandler handler = new ProfileHandler(this);
-
         long result = handler.addProfile(profile);
+        if (result > 0) {
+            Toast.makeText(SignUpActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
 
-        FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile).addOnCompleteListener(task -> {
-
-            if (task.isSuccessful()) {
-                Toast.makeText(SignUpActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                progressBar.setVisibility(View.GONE);
-                signUpButton.setVisibility(View.VISIBLE);
-                Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
+            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            progressBar.setVisibility(View.GONE);
+            signUpButton.setVisibility(View.VISIBLE);
+            Toast.makeText(SignUpActivity.this, "Data Updated Failed", Toast.LENGTH_SHORT).show();
+        }
 
     }
 

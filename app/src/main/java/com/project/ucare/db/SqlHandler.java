@@ -36,11 +36,7 @@ public class SqlHandler {
     }
 
     long upsert(String tableName, ContentValues contentValues) {
-        long result = sqlDatabase.insertWithOnConflict(tableName, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-        if (sqlDatabase.isOpen()) {
-            sqlDatabase.close();
-        }
-        return result;
+        return sqlDatabase.insertWithOnConflict(tableName, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
     }
 
     public Cursor selectQuery(String query) {

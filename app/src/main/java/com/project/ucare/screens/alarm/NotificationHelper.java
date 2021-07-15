@@ -24,7 +24,7 @@ public class NotificationHelper extends ContextWrapper {
     private NotificationManager mManager;
     private Schedule schedule;
 
-    public NotificationHelper(Context base,Schedule schedule) {
+    public NotificationHelper(Context base, Schedule schedule) {
         super(base);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
@@ -57,21 +57,21 @@ public class NotificationHelper extends ContextWrapper {
 
 
         Intent actionSn = new Intent(this, NotificationActionReceiver.class);
-        actionSn.putExtra("id", schedule.getAlarm().getId());
+        actionSn.putExtra("schedule", schedule);
         actionSn.putExtra("type", "snooze");
         PendingIntent actionSnPendingIntent = PendingIntent.getBroadcast(this, 0,
                 actionSn, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         Intent actionTake = new Intent(this, NotificationActionReceiver.class);
-        actionTake.putExtra("id", schedule.getAlarm().getId());
         actionTake.putExtra("type", "taking_now");
+        actionTake.putExtra("schedule", schedule);
         PendingIntent actionTakePendingIntent = PendingIntent.getBroadcast(this, 0,
                 actionTake, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         return new NotificationCompat.Builder(getApplicationContext(), channelID)
-                //  .setTimeoutAfter(2000)
+                .setTimeoutAfter(30000)
                 .addAction(R.mipmap.ic_launcher, "Snooze", actionSnPendingIntent)
                 .addAction(R.mipmap.ic_launcher, "Taking Now", actionTakePendingIntent)
                 .setContentTitle(schedule.getMedicineName())

@@ -8,11 +8,14 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -73,15 +76,21 @@ public class Utils {
         return sdf.format(c.getTime());
     }
 
-    public static Date incrementDateByOne(Date date) {
+    public static Date incrementDate(Date date, int day) {
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        c.add(Calendar.DATE, 1);
+        c.add(Calendar.DATE, day);
         return c.getTime();
     }
 
     public static boolean isDateValid(String date) {
         return System.currentTimeMillis() > stringToDate(date).getTime();
     }
+
+
+    public static String firebaseUserId() {
+        return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+    }
+
 
 }

@@ -52,6 +52,7 @@ public class ProfileHandler {
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
+
                     Profile profile = new Profile();
                     profile.setName(cursor.getString(cursor.getColumnIndex(USER_NAME)));
                     profile.setBirth_date(cursor.getString(cursor.getColumnIndex(BIRTH_DATE)));
@@ -65,6 +66,7 @@ public class ProfileHandler {
                 } while (cursor.moveToNext());
             }
         }
+        assert cursor != null;
         cursor.close();
 
         return profileList;
@@ -97,9 +99,13 @@ public class ProfileHandler {
                 } while (cursor.moveToNext());
             }
         }
+        assert cursor != null;
         cursor.close();
 
-        return profileList.get(0);
+        if (profileList.isEmpty())
+            return null;
+        else
+            return profileList.get(0);
     }
 
     public void deleteProfile(String id) {

@@ -95,7 +95,8 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
         recyclerView.setAdapter(adapter);
 
 
-        // getProfile();
+        //   getData();
+        //  getProfile();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,10 +111,7 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
             }
         });
 
-
-        Log.d("TAG", "onCreateView: "+ Utils.dateToString(Utils.incrementDateByOne(Utils.stringToDate("07/14/21"))));
-
-        Log.d("TAG", "onCreateView: vvarfd "+Utils.isDateValid("07/18/21"));
+        Log.d("TAG", "onCreateView: vvarfd " + Utils.isDateValid("07/18/21"));
 
 
         return root;
@@ -124,25 +122,27 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
         setProfile(handler.getProfileByID(userId));
     }
 
-    private void getProfile() {
-        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        FirebaseDatabase.getInstance().getReference().child("User").child(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                if (snapshot.hasChildren()) {
-                    Profile profile = snapshot.getValue(Profile.class);
-                    setProfile(profile);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
+//    private void getProfile() {
+//        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+//        FirebaseDatabase.getInstance().getReference().child("User").child(userId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                if (snapshot.hasChildren()) {
+//                    Profile profile = snapshot.getValue(Profile.class);
+//                  //  setProfile(profile);
+//                    assert profile != null;
+//                    handler.addProfile(profile);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//    }
 
     private void setProfile(Profile profile) {
 
@@ -187,36 +187,38 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
     }
 
 
-    private void getData() {
-
-        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-
-        FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                progressBar.setVisibility(View.GONE);
-
-                profileList.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    Profile profile = ds.getValue(Profile.class);
-                    profileList.add(profile);
-                }
-                if (profileList.isEmpty()) {
-                    noData.setVisibility(View.VISIBLE);
-                } else {
-                    noData.setVisibility(View.GONE);
-                }
-                adapter.setList(profileList);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-    }
+//    private void getData() {
+//
+//        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+//
+//        FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                progressBar.setVisibility(View.GONE);
+//
+//              //  profileList.clear();
+//                for (DataSnapshot ds : snapshot.getChildren()) {
+//                    Profile profile = ds.getValue(Profile.class);
+//                 //   profileList.add(profile);
+//                    assert profile != null;
+//                    handler.addProfile(profile);
+//                }
+//                if (profileList.isEmpty()) {
+//                 //   noData.setVisibility(View.VISIBLE);
+//                } else {
+//                 //   noData.setVisibility(View.GONE);
+//                }
+//              //  adapter.setList(profileList);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                progressBar.setVisibility(View.GONE);
+//            }
+//        });
+//    }
 
     @Override
     public void onProfileClick(Profile profile) {
