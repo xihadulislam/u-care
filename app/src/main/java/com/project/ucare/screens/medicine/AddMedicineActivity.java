@@ -126,18 +126,15 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.Pb_Addmed);
 
-
         try {
             schedule = (Schedule) getIntent().getSerializableExtra("schedule");
-            edit = getIntent().getStringExtra("edit");
-            Toast.makeText(this, "" + edit, Toast.LENGTH_SHORT).show();
-            setEditData(schedule);
-//            if (schedule!=null){
-//                edit="1";
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        alarm = new Alarm("", 0, 0, 1, new ArrayList<>());
+
+        setEditData(schedule);
 
 
         TimePickerDialog.OnTimeSetListener mTimeSetListener =
@@ -174,7 +171,10 @@ public class AddMedicineActivity extends AppCompatActivity {
                         etTimePicker.setText(aTime);
                         selectedTime = aTime;
 
-                        alarm = new Alarm(aTime, hourOfDay, minute, 1, new ArrayList<>());
+                        alarm.setTitle(aTime);
+                        alarm.setHour(hourOfDay);
+                        alarm.setMinute(minute);
+
 
                         if (selectedTime != "") {
                             Linear_days.setVisibility(View.VISIBLE);
@@ -430,125 +430,131 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(v -> {
 
-            medName = medicineName.getText().toString().trim();
-            medDuration = medicineDuration.getText().toString().trim();
-
-
-            if (medName.isEmpty()) {
-                medicineName.setError("This field can not be blank");
-                return;
-
-            }
-            if (spTypeTx.isEmpty()) {
-                Toast.makeText(AddMedicineActivity.this, "Medicine type time can not be null ", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (spUnitTx.isEmpty()) {
-                Toast.makeText(AddMedicineActivity.this, "Medicine unit can not be null ", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (startDate.equals("")) {
-                Toast.makeText(AddMedicineActivity.this, "Start date can not be null ", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (medDuration.isEmpty()) {
-                medicineDuration.setError("This field can not be blank");
-                return;
-            }
-            if (medIntake.isEmpty()) {
-                Toast.makeText(AddMedicineActivity.this, "Intake time can not be null ", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (selectedTime.equals("")) {
-                Toast.makeText(AddMedicineActivity.this, "reminder time can not be null ", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-
-            if (sat.equals("not") && sun.equals("not") && mon.equals("not") && tue.equals("not") && wed.equals("not") && thu.equals("not") && fri.equals("not")) {
-                Toast.makeText(AddMedicineActivity.this, "You must select a day", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-
-            saveButton.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-
-            if (!sat.equals("not")) {
-                daysList.add(sat);
-            }
-
-            if (!sun.equals("not")) {
-                daysList.add(sun);
-            }
-
-            if (!mon.equals("not")) {
-                daysList.add(mon);
-            }
-
-            if (!tue.equals("not")) {
-                daysList.add(tue);
-            }
-
-            if (!wed.equals("not")) {
-                daysList.add(wed);
-            }
-
-            if (!thu.equals("not")) {
-                daysList.add(thu);
-            }
-
-            if (!fri.equals("not")) {
-                daysList.add(fri);
-            }
-
-
-            Log.d(TAG, "onCreate:all " + "medName: " + medName + "medType: " + spTypeTx + "meUnit: " + spUnitTx + "start date: " + startDate + "duration: " + medDuration + "medIntake: " + medIntake + "reminderTime: " + selectedTime + "selectedDate: " + daysList);
-
-
-            String id = String.valueOf(System.currentTimeMillis());
-
-            String userId = "";
-
-            if (AndroidUtils.sharePrefSettings.getStringValue("pro").equalsIgnoreCase("")) {
-                userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-            } else {
-                userId = AndroidUtils.sharePrefSettings.getStringValue("pro");
-            }
-
-
-            String alar = new StringBuilder(id).reverse().toString();
-
-            String alarmId = AndroidUtils.Companion.splitString(alar, 6);
-
-            alarm.setId(Integer.parseInt(alarmId));
-            alarm.setDays(daysList);
-
-
-            Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, true, System.currentTimeMillis(), alarm);
-
-            FirebaseDatabase.getInstance().getReference().child("Schedule").child(id).setValue(schedule);
-
-            AlarmHandler handler = new AlarmHandler(this, schedule);
-            handler.startAlarm(alarm.getHour(), alarm.getMinute());
-
-            ScheduleHandler handlerSchedule = new ScheduleHandler(this);
-            long result = handlerSchedule.addSchedule(schedule);
-
-            if (result > 0) {
-                Toast.makeText(AddMedicineActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
-                saveButton.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-                finish();
-            } else {
-                saveButton.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(AddMedicineActivity.this, "Data Updated Failed", Toast.LENGTH_SHORT).show();
-            }
+            insertData();
 
         });
+
+    }
+
+
+    void insertData() {
+
+        medName = medicineName.getText().toString().trim();
+        medDuration = medicineDuration.getText().toString().trim();
+
+
+        if (medName.isEmpty()) {
+            medicineName.setError("This field can not be blank");
+            return;
+
+        }
+        if (spTypeTx.isEmpty()) {
+            Toast.makeText(AddMedicineActivity.this, "Medicine type time can not be null ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (spUnitTx.isEmpty()) {
+            Toast.makeText(AddMedicineActivity.this, "Medicine unit can not be null ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (startDate.equals("")) {
+            Toast.makeText(AddMedicineActivity.this, "Start date can not be null ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (medDuration.isEmpty()) {
+            medicineDuration.setError("This field can not be blank");
+            return;
+        }
+        if (medIntake.isEmpty()) {
+            Toast.makeText(AddMedicineActivity.this, "Intake time can not be null ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (selectedTime.equals("")) {
+            Toast.makeText(AddMedicineActivity.this, "reminder time can not be null ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        if (sat.equals("not") && sun.equals("not") && mon.equals("not") && tue.equals("not") && wed.equals("not") && thu.equals("not") && fri.equals("not")) {
+            Toast.makeText(AddMedicineActivity.this, "You must select a day", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        saveButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        if (!sat.equals("not")) {
+            daysList.add(sat);
+        }
+
+        if (!sun.equals("not")) {
+            daysList.add(sun);
+        }
+
+        if (!mon.equals("not")) {
+            daysList.add(mon);
+        }
+
+        if (!tue.equals("not")) {
+            daysList.add(tue);
+        }
+
+        if (!wed.equals("not")) {
+            daysList.add(wed);
+        }
+
+        if (!thu.equals("not")) {
+            daysList.add(thu);
+        }
+
+        if (!fri.equals("not")) {
+            daysList.add(fri);
+        }
+
+
+        String id = getId();
+
+        String userId = "";
+
+        if (AndroidUtils.sharePrefSettings.getStringValue("pro").equalsIgnoreCase("")) {
+            userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        } else {
+            userId = AndroidUtils.sharePrefSettings.getStringValue("pro");
+        }
+
+        String alar = new StringBuilder(id).reverse().toString();
+
+        String alarmId = AndroidUtils.Companion.splitString(alar, 6);
+
+        alarm.setId(Integer.parseInt(alarmId));
+
+
+        alarm.setDays(daysList);
+
+
+        Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, true, System.currentTimeMillis(), alarm);
+
+        FirebaseDatabase.getInstance().getReference().child("Schedule").child(id).setValue(schedule);
+
+        AlarmHandler handler = new AlarmHandler(this, schedule);
+        handler.startAlarm(alarm.getHour(), alarm.getMinute());
+
+        ScheduleHandler handlerSchedule = new ScheduleHandler(this);
+        long result = handlerSchedule.addSchedule(schedule);
+
+        if (result > 0) {
+            Toast.makeText(AddMedicineActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
+            saveButton.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            finish();
+        } else {
+            saveButton.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(AddMedicineActivity.this, "Data Updated Failed", Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 
@@ -556,26 +562,36 @@ public class AddMedicineActivity extends AppCompatActivity {
     private void setEditData(Schedule schedule) {
 
         if (schedule != null) {
-
             medicineName.setText(schedule.getMedicineName());
             etStartDate.setText(schedule.getStartDate());
             medicineDuration.setText(schedule.getDuration());
-            etTimePicker.setText(schedule.getUpdatedTime().toString());
+            etTimePicker.setText(schedule.getAlarm().getTitle());
 
             startDate = schedule.getStartDate();
             medDuration = schedule.getDuration();
             medName = schedule.getMedicineName();
             selectedTime = schedule.getUpdatedTime().toString();
 
-            Toast.makeText(this, "" + selectedTime, Toast.LENGTH_SHORT).show();
-
-            if (selectedTime != "") {
+            if (!selectedTime.equals("")) {
                 Linear_days.setVisibility(View.VISIBLE);
             } else {
                 Linear_days.setVisibility(View.GONE);
             }
 
+            alarm.setTitle(schedule.getAlarm().getTitle());
+            alarm.setHour(schedule.getAlarm().getHour());
+            alarm.setMinute(schedule.getAlarm().getMinute());
+
         }
     }
+
+    private String getId() {
+        String id = String.valueOf(System.currentTimeMillis());
+        if (schedule != null) {
+            id = schedule.getId();
+        }
+        return id;
+    }
+
 
 }

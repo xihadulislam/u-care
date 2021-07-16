@@ -241,7 +241,6 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.edit) {
-
                     Intent intent = new Intent(getActivity(), CreateProfileActivity.class);
                     intent.putExtra("profile", profile);
                     startActivity(intent);

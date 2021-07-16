@@ -57,6 +57,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
+        AndroidUtils.Companion.init(this);
 
 
         try {
@@ -102,6 +103,7 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ScheduleActivity.this, AddMedicineActivity.class);
+                intent.putExtra("schedule", "null");
                 startActivity(intent);
 
             }
@@ -131,7 +133,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
     }
 
 
-
     @Override
     public void onScheduleLongClick(Schedule schedule, View view) {
 
@@ -142,10 +143,8 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
             public boolean onMenuItemClick(MenuItem item) {
                 int itemId = item.getItemId();
                 if (itemId == R.id.edit) {
-
                     Intent intent = new Intent(ScheduleActivity.this, AddMedicineActivity.class);
                     intent.putExtra("schedule", schedule);
-                    intent.putExtra("edit", "1");
                     startActivity(intent);
 
                     return true;
