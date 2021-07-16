@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.ucare.R;
+import com.project.ucare.models.Profile;
 import com.project.ucare.models.Schedule;
+import com.project.ucare.screens.main.home.ProfileAdapter;
 
 import java.util.List;
 
@@ -32,6 +34,20 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     }
 
 
+
+    interface ScheduleListener {
+
+        void onScheduleLongClick(Schedule schedule,View view);
+    }
+
+    ScheduleAdapter.ScheduleListener scheduleListener;
+
+    public void setScheduleListener( ScheduleAdapter.ScheduleListener scheduleListener) {
+        this.scheduleListener = scheduleListener;
+    }
+
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,6 +64,20 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         holder.labelIntake.setText(schedule.getIntake());
         holder.labelUnit.setText("Unit : " + schedule.getMedicineUnit());
         holder.labelReminder.setText(schedule.getAlarm().getTitle());
+
+
+
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (scheduleListener != null) {
+                    scheduleListener.onScheduleLongClick(schedule,v);
+                }
+                return true;
+            }
+        });
+
 
 
     }

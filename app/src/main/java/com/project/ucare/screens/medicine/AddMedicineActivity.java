@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -88,6 +89,10 @@ public class AddMedicineActivity extends AppCompatActivity {
     List<String> daysList = new ArrayList<>();
 
     Alarm alarm;
+    Schedule schedule;
+    String edit = "";
+    String medName = "";
+    String medDuration = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +125,20 @@ public class AddMedicineActivity extends AppCompatActivity {
         spinnerIntake = findViewById(R.id.spinner_intake);
 
         progressBar = findViewById(R.id.Pb_Addmed);
+
+
+        try {
+            schedule = (Schedule) getIntent().getSerializableExtra("schedule");
+            edit = getIntent().getStringExtra("edit");
+            Toast.makeText(this, "" + edit, Toast.LENGTH_SHORT).show();
+            setEditData(schedule);
+//            if (schedule!=null){
+//                edit="1";
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         TimePickerDialog.OnTimeSetListener mTimeSetListener =
                 new TimePickerDialog.OnTimeSetListener() {
@@ -208,7 +227,14 @@ public class AddMedicineActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, typeList);
         spinnerType.setAdapter(adapter);
-
+        try {
+            String compareValue = schedule.getMedicineType();
+            if (compareValue != null) {
+                int spinnerPosition = adapter.getPosition(compareValue);
+                spinnerType.setSelection(spinnerPosition);
+            }
+        } catch (Exception e) {
+        }
         spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
@@ -218,17 +244,47 @@ public class AddMedicineActivity extends AppCompatActivity {
                 spTypeTx = parent.getItemAtPosition(position).toString();
                 if (parent.getItemAtPosition(position).toString() == "Syrup") {
 
+
                     adapterunit = new ArrayAdapter<String>(AddMedicineActivity.this,
                             android.R.layout.simple_spinner_item, unitListSyrup);
                     spinnerUnit.setAdapter(adapterunit);
+
+                    try {
+                        String compareUnit = schedule.getMedicineUnit();
+                        if (compareUnit != null) {
+                            int spinnerPosition = adapterunit.getPosition(compareUnit);
+                            spinnerUnit.setSelection(spinnerPosition);
+                        }
+                    } catch (Exception e) {
+                    }
+
+
                 } else if (parent.getItemAtPosition(position).toString() == "Tablet") {
                     adapterunit = new ArrayAdapter<String>(AddMedicineActivity.this,
                             android.R.layout.simple_spinner_item, unitListTablet);
                     spinnerUnit.setAdapter(adapterunit);
+                    try {
+                        String compareUnit = schedule.getMedicineUnit();
+                        if (compareUnit != null) {
+                            int spinnerPosition = adapterunit.getPosition(compareUnit);
+                            spinnerUnit.setSelection(spinnerPosition);
+                        }
+                    } catch (Exception e) {
+                    }
+
                 } else {
                     adapterunit = new ArrayAdapter<String>(AddMedicineActivity.this,
                             android.R.layout.simple_spinner_item, unitListCapsule);
                     spinnerUnit.setAdapter(adapterunit);
+                    try {
+                        String compareUnit = schedule.getMedicineUnit();
+                        if (compareUnit != null) {
+                            int spinnerPosition = adapterunit.getPosition(compareUnit);
+                            spinnerUnit.setSelection(spinnerPosition);
+                        }
+                    } catch (Exception e) {
+                    }
+
                 }
 
             }
@@ -242,6 +298,16 @@ public class AddMedicineActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterIntake = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, intakeList);
         spinnerIntake.setAdapter(adapterIntake);
+
+        try {
+            String compareValueintake = schedule.getIntake();
+            if (compareValueintake != null) {
+                int spinnerPosition = adapterIntake.getPosition(compareValueintake);
+                spinnerIntake.setSelection(spinnerPosition);
+            }
+        } catch (Exception e) {
+        }
+
 
         spinnerIntake.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -258,7 +324,7 @@ public class AddMedicineActivity extends AppCompatActivity {
             }
         });
 
-        spinnerUnit.setAdapter(adapterunit);
+//        spinnerUnit.setAdapter(adapterunit);
         spinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
@@ -364,8 +430,8 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         saveButton.setOnClickListener(v -> {
 
-            String medName = medicineName.getText().toString().trim();
-            String medDuration = medicineDuration.getText().toString().trim();
+            medName = medicineName.getText().toString().trim();
+            medDuration = medicineDuration.getText().toString().trim();
 
 
             if (medName.isEmpty()) {
@@ -441,6 +507,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
             Log.d(TAG, "onCreate:all " + "medName: " + medName + "medType: " + spTypeTx + "meUnit: " + spUnitTx + "start date: " + startDate + "duration: " + medDuration + "medIntake: " + medIntake + "reminderTime: " + selectedTime + "selectedDate: " + daysList);
 
+
             String id = String.valueOf(System.currentTimeMillis());
 
             String userId = "";
@@ -484,4 +551,31 @@ public class AddMedicineActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private void setEditData(Schedule schedule) {
+
+        if (schedule != null) {
+
+            medicineName.setText(schedule.getMedicineName());
+            etStartDate.setText(schedule.getStartDate());
+            medicineDuration.setText(schedule.getDuration());
+            etTimePicker.setText(schedule.getUpdatedTime().toString());
+
+            startDate = schedule.getStartDate();
+            medDuration = schedule.getDuration();
+            medName = schedule.getMedicineName();
+            selectedTime = schedule.getUpdatedTime().toString();
+
+            Toast.makeText(this, "" + selectedTime, Toast.LENGTH_SHORT).show();
+
+            if (selectedTime != "") {
+                Linear_days.setVisibility(View.VISIBLE);
+            } else {
+                Linear_days.setVisibility(View.GONE);
+            }
+
+        }
+    }
+
 }
