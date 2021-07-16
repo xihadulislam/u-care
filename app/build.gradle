@@ -55,5 +55,7 @@ dependencies {
 
     implementation "com.google.code.gson:gson:2.8.6"
 
+    // Also declare the dependency for the Google Play services library and specify its version
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
 
 }

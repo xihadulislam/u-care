@@ -11,6 +11,7 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+import com.google.gson.Gson;
 import com.project.ucare.R;
 import com.project.ucare.models.Schedule;
 
@@ -51,13 +52,13 @@ public class NotificationHelper extends ContextWrapper {
 
 
         Intent fullScreenIntent = new Intent(this, AlarmActivity.class);
-        fullScreenIntent.putExtra("schedule", schedule);
+        fullScreenIntent.putExtra("schedule", new Gson().toJson(schedule));
         PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0,
                 fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
         Intent actionSn = new Intent(this, NotificationActionReceiver.class);
-        actionSn.putExtra("schedule", schedule);
+        actionSn.putExtra("schedule", new Gson().toJson(schedule));
         actionSn.putExtra("type", "snooze");
         PendingIntent actionSnPendingIntent = PendingIntent.getBroadcast(this, 0,
                 actionSn, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -65,7 +66,7 @@ public class NotificationHelper extends ContextWrapper {
 
         Intent actionTake = new Intent(this, NotificationActionReceiver.class);
         actionTake.putExtra("type", "taking_now");
-        actionTake.putExtra("schedule", schedule);
+        actionTake.putExtra("schedule", new Gson().toJson(schedule));
         PendingIntent actionTakePendingIntent = PendingIntent.getBroadcast(this, 0,
                 actionTake, PendingIntent.FLAG_UPDATE_CURRENT);
 

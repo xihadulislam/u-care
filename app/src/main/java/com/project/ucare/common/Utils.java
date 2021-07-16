@@ -7,6 +7,7 @@ import android.content.Context;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Vibrator;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -38,11 +39,15 @@ public class Utils {
         ringtone = RingtoneManager.getRingtone(context, alarmUri);
         ringtone.play();
 
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(3000);
+
         final Timer t = new Timer();
         t.schedule(new TimerTask() {
             public void run() {
                 ringtone.stop();
                 t.cancel();
+                vibrator.cancel();
             }
         }, 30000);
     }

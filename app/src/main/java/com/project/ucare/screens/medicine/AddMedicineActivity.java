@@ -533,7 +533,6 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         alarm.setDays(daysList);
 
-
         Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, true, System.currentTimeMillis(), alarm);
 
         FirebaseDatabase.getInstance().getReference().child("Schedule").child(id).setValue(schedule);

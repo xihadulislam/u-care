@@ -1,7 +1,6 @@
 package com.project.ucare.models;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Schedule implements Serializable {
     String id;
@@ -12,7 +11,7 @@ public class Schedule implements Serializable {
     String startDate;
     String duration;
     String intake;
-    boolean isEnable;
+    boolean enable;
     Long updatedTime;
     Alarm alarm;
 
@@ -20,7 +19,7 @@ public class Schedule implements Serializable {
     public Schedule() {
     }
 
-    public Schedule(String id, String userId, String medicineName, String medicineType, String medicineUnit, String startDate, String duration, String intake, boolean isEnable, Long updatedTime, Alarm alarm) {
+    public Schedule(String id, String userId, String medicineName, String medicineType, String medicineUnit, String startDate, String duration, String intake, boolean enable, Long updatedTime, Alarm alarm) {
         this.id = id;
         this.userId = userId;
         this.medicineName = medicineName;
@@ -29,7 +28,7 @@ public class Schedule implements Serializable {
         this.startDate = startDate;
         this.duration = duration;
         this.intake = intake;
-        this.isEnable = isEnable;
+        this.enable = enable;
         this.updatedTime = updatedTime;
         this.alarm = alarm;
     }
@@ -99,11 +98,11 @@ public class Schedule implements Serializable {
     }
 
     public boolean isEnable() {
-        return isEnable;
+        return enable;
     }
 
     public void setEnable(boolean enable) {
-        isEnable = enable;
+        this.enable = enable;
     }
 
     public Long getUpdatedTime() {

@@ -13,6 +13,7 @@ import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -68,8 +69,8 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
             }
             if (flag) {
                 Log.d("qqq", "startAgain:  flag " + flag);
-                AlarmHandler handler = new AlarmHandler(context, schedule);
-                handler.startNextAlarm(schedule.getAlarm().getHour(), schedule.getAlarm().getMinute());
+               // AlarmHandler handler = new AlarmHandler(context, schedule);
+              //  handler.startNextAlarm(schedule.getAlarm().getHour(), schedule.getAlarm().getMinute());
 
             } else {
 

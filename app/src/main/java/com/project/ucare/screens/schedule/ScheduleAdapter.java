@@ -1,12 +1,14 @@
 package com.project.ucare.screens.schedule;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.ucare.R;
@@ -34,18 +36,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
     }
 
 
-
     interface ScheduleListener {
 
-        void onScheduleLongClick(Schedule schedule,View view);
+        void onScheduleLongClick(Schedule schedule, View view);
     }
 
     ScheduleAdapter.ScheduleListener scheduleListener;
 
-    public void setScheduleListener( ScheduleAdapter.ScheduleListener scheduleListener) {
+    public void setScheduleListener(ScheduleAdapter.ScheduleListener scheduleListener) {
         this.scheduleListener = scheduleListener;
     }
-
 
 
     @NonNull
@@ -65,19 +65,26 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         holder.labelUnit.setText("Unit : " + schedule.getMedicineUnit());
         holder.labelReminder.setText(schedule.getAlarm().getTitle());
 
+        Log.d("TAG", "onBindViewHolder: "+schedule.isEnable());
 
+        if (schedule.isEnable()){
+            holder.switchId.setChecked(true);
+
+        }else {
+            holder.switchId.setChecked(false);
+
+        }
 
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (scheduleListener != null) {
-                    scheduleListener.onScheduleLongClick(schedule,v);
+                    scheduleListener.onScheduleLongClick(schedule, v);
                 }
                 return true;
             }
         });
-
 
 
     }
@@ -93,6 +100,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         private TextView labelIntake;
         private TextView labelUnit;
         private TextView labelReminder;
+        private SwitchCompat switchId;
 
         public ViewHolder(View view) {
             super(view);
@@ -101,6 +109,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             labelIntake = view.findViewById(R.id.labelIntake);
             labelUnit = view.findViewById(R.id.labelUnit);
             labelReminder = view.findViewById(R.id.labelReminder);
+            switchId = view.findViewById(R.id.switchId);
 
         }
 
