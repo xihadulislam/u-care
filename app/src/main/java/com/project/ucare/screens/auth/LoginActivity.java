@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView resisterText, forget_password;
     EditText email, password;
     Button loginButton, googleButton;
-    ProgressBar Pb_login;
+    ProgressBar Pb_login,Pb_G_login;
     // jhgj
 
     FirebaseAuth firebaseAuth;
@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         googleButton = findViewById(R.id.bt_google_login);
 
         Pb_login = findViewById(R.id.Pb_login);
+        Pb_G_login = findViewById(R.id.pb_g_login);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -85,6 +86,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Pb_G_login.setVisibility(View.VISIBLE);
+                googleButton.setVisibility(View.GONE);
                 sinIn();
 
 
@@ -167,6 +170,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Pb_G_login.setVisibility(View.GONE);
+                            googleButton.setVisibility(View.VISIBLE);
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             //  updateUI(user);
@@ -176,6 +181,8 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
 
                         } else {
+                            Pb_G_login.setVisibility(View.GONE);
+                            googleButton.setVisibility(View.VISIBLE);
                             // If sign in fails, display a message to the user.
                             ///  Log.w(TAG, "signInWithCredential:failure", task.getException());
                             //  updateUI(null);

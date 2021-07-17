@@ -217,7 +217,6 @@ public class SignUpActivity extends AppCompatActivity {
         long result = handler.addProfile(profile);
         if (result > 0) {
             Toast.makeText(SignUpActivity.this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
