@@ -32,6 +32,11 @@ public class NotificationActionReceiver  extends BroadcastReceiver {
 
         }
 
+
+        if (type.equalsIgnoreCase("snooze")){
+
+        }
+
         Log.d("qqq", "onReceive: "+schedule.getMedicineName());
 
         Log.d("qqq", "onReceive: "+type);

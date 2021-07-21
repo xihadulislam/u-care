@@ -27,21 +27,32 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
+import com.project.ucare.db.ProfileHandler;
+import com.project.ucare.models.Profile;
 import com.project.ucare.screens.main.MainActivity;
 import com.xihad.androidutils.AndroidUtils;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
     TextView resisterText, forget_password;
     EditText email, password;
     Button loginButton, googleButton;
-    ProgressBar Pb_login,Pb_G_login;
+    ProgressBar Pb_login, Pb_G_login;
     // jhgj
 
     FirebaseAuth firebaseAuth;
 
     GoogleSignInClient mGoogleSignInClient;
+
+    ProfileHandler profileHandler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
         AndroidUtils.Companion.init(LoginActivity.this);
         AndroidUtils.Companion.setStatusBarColor(R.color.white);
+        profileHandler = new ProfileHandler(this);
 
 
         resisterText = findViewById(R.id.tv_register);
@@ -75,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                // .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -154,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
 
-                firebaseAuthWithGoogle(account.getIdToken());
+                firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
 
@@ -163,8 +175,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void firebaseAuthWithGoogle(String idToken) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -175,6 +187,8 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             //  updateUI(user);
+
+                            saveData(user.getUid(), user.getDisplayName(), "", "");
 
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
@@ -202,6 +216,7 @@ public class LoginActivity extends AppCompatActivity {
                     prefs.putString("pass", pass);
                     prefs.apply();
 
+                    getProfile();
                     Pb_login.setVisibility(View.VISIBLE);
                     loginButton.setVisibility(View.INVISIBLE);
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -217,4 +232,39 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+    private void getProfile() {
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        FirebaseDatabase.getInstance().getReference().child("User").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.hasChildren()) {
+                    Profile profile = snapshot.getValue(Profile.class);
+                    if (profile != null)
+                        profileHandler.addProfile(profile);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
+    private void saveData(String id, String name, String date, String gender) {
+
+        Profile profile = new Profile(id, "", name, date, gender, System.currentTimeMillis());
+
+        FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile);
+
+        ProfileHandler handler = new ProfileHandler(this);
+        long result = handler.addProfile(profile);
+
+
+    }
+
 }

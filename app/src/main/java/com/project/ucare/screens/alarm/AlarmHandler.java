@@ -47,7 +47,7 @@ public class AlarmHandler {
 
         Log.d("qqq", "startAlarm: " + calendar.getTimeInMillis() + " " + hour + " " + min + calendar.getTime());
 
-        long time = calendar.getTimeInMillis() - 36000;
+        long time = calendar.getTimeInMillis() - 20000;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent);

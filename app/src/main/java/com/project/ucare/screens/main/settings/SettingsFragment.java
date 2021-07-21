@@ -88,24 +88,33 @@ public class SettingsFragment extends Fragment {
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-                    @Override
-                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                        if (firebaseAuth.getCurrentUser() == null) {
-                            //Do anything here which needs to be done after signout is complete
-                            Intent intent = new Intent(getContext(), LoginActivity.class);
-                            startActivity(intent);
-                            getActivity().finish();
-                        }
-                    }
-                };
+//                FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
+//                    @Override
+//                    public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                        if (firebaseAuth.getCurrentUser() == null) {
+//                            //Do anything here which needs to be done after signout is complete
+//                            Intent intent = new Intent(getContext(), LoginActivity.class);
+//                            startActivity(intent);
+//                            getActivity().finish();
+//                        }
+//                    }
+//                };
+//
+////Init and attach
+//                firebaseAuth = FirebaseAuth.getInstance();
+//                firebaseAuth.addAuthStateListener(authStateListener);
+//
+////Call signOut()
+//                firebaseAuth.signOut();
+//
+//
 
-//Init and attach
-                firebaseAuth = FirebaseAuth.getInstance();
-                firebaseAuth.addAuthStateListener(authStateListener);
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
 
-//Call signOut()
-                firebaseAuth.signOut();
+
             }
         });
 
