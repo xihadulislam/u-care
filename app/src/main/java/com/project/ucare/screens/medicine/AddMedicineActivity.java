@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -93,7 +94,7 @@ public class AddMedicineActivity extends AppCompatActivity {
     String edit = "";
     String medName = "";
     String medDuration = "";
-
+//    CheckBox fee_checkbox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +109,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         tvWed = findViewById(R.id.wed);
         tvThu = findViewById(R.id.thu);
         tvFri = findViewById(R.id.friday);
+//        fee_checkbox =findViewById(R.id.checkBox1);
 
         Linear_days = findViewById(R.id.Linear_days);
         saveButton = findViewById(R.id.save_button);
@@ -592,5 +594,18 @@ public class AddMedicineActivity extends AppCompatActivity {
         return id;
     }
 
-
+//    public void checkbox_clicked(View v)
+//    {
+//
+//        if(fee_checkbox.isChecked())
+//        {
+//            // true,do the task
+//
+//        }
+//        else
+//        {
+//
+//        }
+//
+//    }
 }

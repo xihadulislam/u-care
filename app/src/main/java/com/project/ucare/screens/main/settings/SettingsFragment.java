@@ -111,6 +111,10 @@ public class SettingsFragment extends Fragment {
 //                firebaseAuth.signOut();
 //
 //
+                SharedPreferences.Editor editor = getContext().getSharedPreferences("myContact", MODE_PRIVATE).edit();
+                editor.putString("name", "1");
+                editor.putString("number", "0");
+                editor.apply();
 
 
                 // Configure Google Sign In
@@ -218,6 +222,13 @@ public class SettingsFragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+
+
+//                                            SharedPreferences prefs = getContext().getSharedPreferences("myContact", MODE_PRIVATE);
+
+                                          //"No name defined" is the default value.
+
+
                                             Intent intent = new Intent(getContext(), LoginActivity.class);
                                             startActivity(intent);
                                             getActivity().finish();
