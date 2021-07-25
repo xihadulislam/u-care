@@ -1,6 +1,7 @@
 package com.project.ucare.screens.main.settings;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,8 @@ import android.database.Cursor;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +29,24 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.project.ucare.R;
+import com.project.ucare.common.Utils;
+import com.project.ucare.db.ProfileHandler;
+import com.project.ucare.db.ScheduleHandler;
+import com.project.ucare.models.Profile;
+import com.project.ucare.models.Schedule;
 import com.project.ucare.screens.auth.LoginActivity;
 import com.project.ucare.screens.auth.SignUpActivity;
+import com.project.ucare.screens.splash.SplashActivity;
+import com.xihad.androidutils.AndroidUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
@@ -36,20 +54,40 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SettingsFragment extends Fragment {
 
-    TextView feedBack, deleteAccount, logOut;
+    TextView feedBack, deleteAccount, logOut, sync;
 
     private FirebaseAuth firebaseAuth;
+
+    ProfileHandler profileHandler;
+    ScheduleHandler scheduleHandler;
+
+    ProgressDialog pd;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
         listRingtones();
+
+        AndroidUtils.Companion.init(getActivity());
+
+        profileHandler = new ProfileHandler(getContext());
+        scheduleHandler = new ScheduleHandler(getActivity());
+
+        pd = new ProgressDialog(getActivity());
+
         feedBack = root.findViewById(R.id.feedBack);
         deleteAccount = root.findViewById(R.id.deleteAccount);
         logOut = root.findViewById(R.id.logOut);
+        sync = root.findViewById(R.id.sync);
 
 
+        sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sync();
+            }
+        });
         feedBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,6 +95,8 @@ public class SettingsFragment extends Fragment {
                 composeEmail();
             }
         });
+
+
         deleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,5 +269,195 @@ public class SettingsFragment extends Fragment {
                     }
                 });
     }
+
+
+    private void sync() {
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+            pd.setMessage("loading");
+            pd.show();
+
+            getProfile();
+            syncProfiles();
+            syncSchedules();
+        }
+
+    }
+
+    private void getProfile() {
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        FirebaseDatabase.getInstance().getReference().child("User").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.hasChildren()) {
+                    Profile profile = snapshot.getValue(Profile.class);
+                    if (profile != null)
+                        profileHandler.addProfile(profile);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
+    private void syncProfiles() {
+
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+
+        FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                List<Profile> profileList = new ArrayList<>();
+                List<Profile> profileListLocal;
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Profile profile = ds.getValue(Profile.class);
+                    profileList.add(profile);
+                }
+
+                profileListLocal = profileHandler.getProfileList(Utils.firebaseUserId());
+                boolean flg = true;
+                for (Profile profile : profileList) {
+                    flg = true;
+                    for (Profile profileLocal : profileListLocal) {
+                        if (profile.getId().equalsIgnoreCase(profileLocal.getId())) {
+                            flg = false;
+                            break;
+                        }
+                    }
+
+                    if (flg) {
+                        profileHandler.addProfile(profile);
+                        Log.d("aaa", "onDataChange:  local");
+                    }
+
+                }
+
+
+                for (Profile profileLocal : profileListLocal) {
+                    flg = true;
+                    for (Profile profile : profileList) {
+                        if (profileLocal.getId().equalsIgnoreCase(profile.getId())) {
+                            flg = false;
+                            break;
+                        }
+                    }
+                    if (flg) {
+                        FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(profileLocal.getId()).setValue(profileLocal);
+                        Log.d("aaa", "onDataChange:  firebase");
+                    }
+
+                }
+
+                profileListLocal = profileHandler.getProfileList(Utils.firebaseUserId());
+
+                for (Profile profileLocal : profileListLocal) {
+                    flg = true;
+                    for (Profile profile : profileList) {
+                        if (profileLocal.getId().equalsIgnoreCase(profile.getId())) {
+                            if (profileLocal.getUpdatedTime() > profile.getUpdatedTime()) {
+                                FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(profileLocal.getId()).setValue(profileLocal);
+                            }
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    private void syncSchedules() {
+
+
+        FirebaseDatabase.getInstance().getReference().child("Schedule").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                List<Schedule> scheduleList = new ArrayList<>();
+                List<Schedule> scheduleListLocal;
+
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Schedule schedule = ds.getValue(Schedule.class);
+                    scheduleList.add(schedule);
+                }
+
+                scheduleListLocal = scheduleHandler.getAllSchedules();
+
+
+                boolean flg = true;
+                for (Schedule schedule : scheduleList) {
+                    flg = true;
+                    for (Schedule scheduleLocal : scheduleListLocal) {
+                        if (schedule.getId().equalsIgnoreCase(scheduleLocal.getId())) {
+                            flg = false;
+                            break;
+                        }
+
+                    }
+
+                    if (flg) {
+                        scheduleHandler.addSchedule(schedule);
+                    }
+                }
+
+                for (Schedule scheduleLocal : scheduleListLocal) {
+                    flg = true;
+                    for (Schedule schedule : scheduleList) {
+                        if (scheduleLocal.getId().equalsIgnoreCase(schedule.getId())) {
+                            flg = false;
+                            break;
+                        }
+                    }
+
+                    if (flg) {
+                        FirebaseDatabase.getInstance().getReference().child("Schedule").child(scheduleLocal.getId()).setValue(scheduleLocal);
+                        Log.d("aaa", "onDataChange:  firebase");
+                    }
+                }
+
+                scheduleListLocal = scheduleHandler.getAllSchedules();
+
+                for (Schedule scheduleLocal : scheduleListLocal) {
+                    flg = true;
+                    for (Schedule schedule : scheduleList) {
+                        if (scheduleLocal.getId().equalsIgnoreCase(schedule.getId())) {
+                            if (scheduleLocal.getUpdatedTime() > scheduleLocal.getUpdatedTime()) {
+                                FirebaseDatabase.getInstance().getReference().child("Schedule").child(scheduleLocal.getId()).setValue(scheduleList);
+                            }
+                            break;
+                        }
+                    }
+                }
+
+
+                pd.cancel();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+                pd.cancel();
+            }
+        });
+
+    }
+
 
 }

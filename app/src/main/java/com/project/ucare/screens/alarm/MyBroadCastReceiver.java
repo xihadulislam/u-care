@@ -41,13 +41,13 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
 
         if (schedule != null) {
 
-            NotificationHelper notificationHelper = new NotificationHelper(context, schedule);
-            NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
-            notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());
-            Utils.playRing(context);
+//            NotificationHelper notificationHelper = new NotificationHelper(context, schedule);
+//            NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
+//            notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());
+//            Utils.playRing(context);
+//
 
-
-          //  playAlarm(context, schedule);
+          playAlarm(context, schedule);
             Log.d(TAG, "onReceive: ");
         }
 
@@ -79,7 +79,6 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
                 }
                 Log.d(TAG, "playAlarm: "+flag);
                 if (flag) {
-
                     NotificationHelper notificationHelper = new NotificationHelper(context, schedule);
                     NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
                     notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());

@@ -178,10 +178,13 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
             AlarmHandler handler = new AlarmHandler(this, schedule);
             handler.startAlarm(schedule.getAlarm().getHour(), schedule.getAlarm().getMinute());
             scheduleHandler.addSchedule(schedule);
+            FirebaseDatabase.getInstance().getReference().child("Schedule").child(schedule.getId()).setValue(schedule);
         } else {
             AlarmHandler handler = new AlarmHandler(this, schedule);
             handler.cancelAlarm();
             scheduleHandler.addSchedule(schedule);
+            FirebaseDatabase.getInstance().getReference().child("Schedule").child(schedule.getId()).setValue(schedule);
+
         }
 
     }

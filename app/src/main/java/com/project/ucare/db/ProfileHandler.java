@@ -45,7 +45,7 @@ public class ProfileHandler {
         List<Profile> profileList = new ArrayList<>();
 
         String query = "SELECT * FROM " + TABLE_PROFILE + " where " + PARENT_ID + "= '"
-                + parent_id + "' ORDER BY " + KEY_ID + " DESC";
+                + parent_id + "' ORDER BY " + KEY_ID + " ASC";
 
         Cursor cursor = sqlHandler.selectQuery(query);
 
