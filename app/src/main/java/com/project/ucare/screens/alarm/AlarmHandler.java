@@ -44,17 +44,15 @@ public class AlarmHandler {
             calendar.add(Calendar.DATE, 1);
         }
 
-
         Log.d("qqq", "startAlarm: " + calendar.getTimeInMillis() + " " + hour + " " + min + calendar.getTime());
 
         long time = calendar.getTimeInMillis() - 20000;
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time, time, pendingIntent);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, time, time, pendingIntent);
         } else {
-            alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, time, time, pendingIntent);
         }
     }
 

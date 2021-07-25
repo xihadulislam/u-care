@@ -89,7 +89,7 @@ public class Utils {
     }
 
     public static boolean isDateValid(String date) {
-        return System.currentTimeMillis() > stringToDate(date).getTime();
+        return System.currentTimeMillis() >= stringToDate(date).getTime();
     }
 
 

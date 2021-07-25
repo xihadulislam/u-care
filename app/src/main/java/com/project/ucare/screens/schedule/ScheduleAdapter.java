@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,8 +38,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
 
     interface ScheduleListener {
-
         void onScheduleLongClick(Schedule schedule, View view);
+
+        void onSwitchClick(Schedule schedule, int position);
     }
 
     ScheduleAdapter.ScheduleListener scheduleListener;
@@ -65,12 +67,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         holder.labelUnit.setText("Unit : " + schedule.getMedicineUnit());
         holder.labelReminder.setText(schedule.getAlarm().getTitle());
 
-        Log.d("TAG", "onBindViewHolder: "+schedule.isEnable());
+        Log.d("TAG", "onBindViewHolder: " + schedule.isEnable());
 
-        if (schedule.isEnable()){
+        if (schedule.isEnable().equalsIgnoreCase("true")) {
             holder.switchId.setChecked(true);
 
-        }else {
+        } else {
             holder.switchId.setChecked(false);
 
         }
@@ -86,6 +88,17 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             }
         });
 
+        holder.switchId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String enable = "";
+                if (isChecked) enable = "true";
+                else  enable = "false";
+                schedule.setEnable(enable);
+              //  notifyItemChanged(position);
+                scheduleListener.onSwitchClick(schedule,position);
+            }
+        });
 
     }
 

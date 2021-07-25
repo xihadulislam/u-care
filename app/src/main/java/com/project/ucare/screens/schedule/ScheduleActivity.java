@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Log;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -25,7 +28,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.project.ucare.R;
+import com.project.ucare.common.Utils;
 import com.project.ucare.db.ScheduleHandler;
+import com.project.ucare.screens.alarm.AlarmHandler;
 import com.project.ucare.screens.main.createprofile.CreateProfileActivity;
 import com.project.ucare.screens.medicine.AddMedicineActivity;
 import com.project.ucare.models.Profile;
@@ -129,9 +134,9 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
             noData.setVisibility(View.GONE);
         }
 
-        for (Schedule schedule : scheduleListData){
+        for (Schedule schedule : scheduleListData) {
 
-            Log.d("TAG", "getLocalData: "+schedule.isEnable());
+            Log.d("TAG", "getLocalData: " + schedule.isEnable());
         }
 
         adapter.setList(scheduleListData);
@@ -164,6 +169,22 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
         popup.show();
     }
 
+    @Override
+    public void onSwitchClick(Schedule schedule, int position) {
+
+        android.util.Log.d("TAG", "onSwitchClick: called ");
+
+        if (schedule.isEnable().equalsIgnoreCase("true")) {
+            AlarmHandler handler = new AlarmHandler(this, schedule);
+            handler.startAlarm(schedule.getAlarm().getHour(), schedule.getAlarm().getMinute());
+            scheduleHandler.addSchedule(schedule);
+        } else {
+            AlarmHandler handler = new AlarmHandler(this, schedule);
+            handler.cancelAlarm();
+            scheduleHandler.addSchedule(schedule);
+        }
+
+    }
 
     private void askToDelete(Schedule schedule) {
 

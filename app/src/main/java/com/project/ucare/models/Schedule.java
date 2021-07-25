@@ -11,7 +11,7 @@ public class Schedule implements Serializable {
     String startDate;
     String duration;
     String intake;
-    boolean enable;
+    String enable;
     Long updatedTime;
     Alarm alarm;
 
@@ -19,7 +19,7 @@ public class Schedule implements Serializable {
     public Schedule() {
     }
 
-    public Schedule(String id, String userId, String medicineName, String medicineType, String medicineUnit, String startDate, String duration, String intake, boolean enable, Long updatedTime, Alarm alarm) {
+    public Schedule(String id, String userId, String medicineName, String medicineType, String medicineUnit, String startDate, String duration, String intake, String enable, Long updatedTime, Alarm alarm) {
         this.id = id;
         this.userId = userId;
         this.medicineName = medicineName;
@@ -97,11 +97,11 @@ public class Schedule implements Serializable {
         this.intake = intake;
     }
 
-    public boolean isEnable() {
+    public String isEnable() {
         return enable;
     }
 
-    public void setEnable(boolean enable) {
+    public void setEnable(String enable) {
         this.enable = enable;
     }
 

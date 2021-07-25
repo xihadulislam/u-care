@@ -38,7 +38,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         AndroidUtils.Companion.init(SplashActivity.this);
         AndroidUtils.Companion.setStatusBarColor(R.color.white);
@@ -56,8 +56,9 @@ public class SplashActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     startNext();
+
                 }
-            }, 2000);
+            }, 1000);
 
         }
 
@@ -80,10 +81,20 @@ public class SplashActivity extends AppCompatActivity {
 
     private void sync() {
 
-        getProfile();
-        syncProfiles();
-        syncSchedules();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startNext();
+                }
+            }, 1000);
 
+        } else {
+            getProfile();
+            syncProfiles();
+            syncSchedules();
+        }
 
     }
 

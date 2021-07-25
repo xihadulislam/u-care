@@ -31,6 +31,8 @@ import static com.project.ucare.common.Utils.playRing;
 
 public class MyBroadCastReceiver extends BroadcastReceiver {
 
+    private static final String TAG = "MyBroadCastReceiver";
+
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -38,49 +40,51 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
         Schedule schedule = new Gson().fromJson(intent.getStringExtra("schedule"), Schedule.class);
 
         if (schedule != null) {
-            NotificationHelper notificationHelper = new NotificationHelper(context, schedule);
-            NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
-            notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());
-            Utils.playRing(context);
-
-            //   startAgain(context, schedule);
-
+            playAlarm(context, schedule);
+            Log.d(TAG, "onReceive: ");
         }
 
-        Log.d("qqq", "onReceive:  call " + schedule.getId());
-
+        Log.d(TAG, "onReceive: called");
 
     }
 
 
-    void startAgain(Context context, Schedule schedule) {
-
+    void playAlarm(Context context, Schedule schedule) {
         String endDate = Utils.dateToString(Utils.incrementDate(Utils.stringToDate(schedule.getStartDate()), Integer.parseInt(schedule.getDuration())));
 
-        Log.d("qqq", "startAgain: " + endDate);
+        if (Utils.isDateValid(endDate)) {
+            // TODO: 7/25/202 cancel
+            AlarmHandler handler = new AlarmHandler(context, schedule);
+            handler.cancelAlarm();
 
-        if (Utils.isDateValid(schedule.getStartDate()) && !Utils.isDateValid(endDate)) {
-            Log.d("qqq", "startAgain:  valid");
-            boolean flag = false;
-            for (String day : schedule.getAlarm().getDays()) {
-                if (Utils.getToday().equalsIgnoreCase(day)) {
-                    flag = true;
-                }
-            }
-            if (flag) {
-                Log.d("qqq", "startAgain:  flag " + flag);
-               // AlarmHandler handler = new AlarmHandler(context, schedule);
-              //  handler.startNextAlarm(schedule.getAlarm().getHour(), schedule.getAlarm().getMinute());
-
-            } else {
-
-                Log.d("qqq", "startAgain:  flag " + flag);
-            }
-
+            Log.d(TAG, "playAlarm:  cancelAlarm");
 
         } else {
-            Log.d("qqq", "startAgain:  not  valid");
+            if (Utils.isDateValid(schedule.getStartDate())) {
+
+                Log.d(TAG, "playAlarm: valid");
+
+                boolean flag = false;
+                for (String day : schedule.getAlarm().getDays()) {
+                    if (Utils.getToday().equalsIgnoreCase(day)) {
+                        flag = true;
+                    }
+                }
+                Log.d(TAG, "playAlarm: "+flag);
+                if (flag) {
+
+                    NotificationHelper notificationHelper = new NotificationHelper(context, schedule);
+                    NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
+                    notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());
+                    Utils.playRing(context);
+                }
+
+            }
+
+            Log.d(TAG, "playAlarm: not valid");
+
         }
+
 
     }
 

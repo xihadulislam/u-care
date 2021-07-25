@@ -84,7 +84,7 @@ public class ScheduleHandler {
                     schedule.setStartDate(cursor.getString(cursor.getColumnIndex(SCHEDULE_START_DATE)));
                     schedule.setDuration(cursor.getString(cursor.getColumnIndex(SCHEDULE_DURATION)));
                     schedule.setIntake(cursor.getString(cursor.getColumnIndex(SCHEDULE_INTAKE)));
-                    schedule.setEnable(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(SCHEDULE_IS_ENABLE))));
+                    schedule.setEnable(cursor.getString(cursor.getColumnIndex(SCHEDULE_IS_ENABLE)));
                     schedule.setUpdatedTime(Long.valueOf(cursor.getString(cursor.getColumnIndex(SCHEDULE_UPDATED_TIME))));
 
                     Alarm alarm = new Gson().fromJson(cursor.getString(cursor.getColumnIndex(SCHEDULE_ALARM)), Alarm.class);
@@ -122,7 +122,7 @@ public class ScheduleHandler {
                     schedule.setStartDate(cursor.getString(cursor.getColumnIndex(SCHEDULE_START_DATE)));
                     schedule.setDuration(cursor.getString(cursor.getColumnIndex(SCHEDULE_DURATION)));
                     schedule.setIntake(cursor.getString(cursor.getColumnIndex(SCHEDULE_INTAKE)));
-                    schedule.setEnable(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(SCHEDULE_IS_ENABLE))));
+                    schedule.setEnable(cursor.getString(cursor.getColumnIndex(SCHEDULE_IS_ENABLE)));
                     schedule.setUpdatedTime(Long.valueOf(cursor.getString(cursor.getColumnIndex(SCHEDULE_UPDATED_TIME))));
 
                     Alarm alarm = new Gson().fromJson(cursor.getString(cursor.getColumnIndex(SCHEDULE_ALARM)), Alarm.class);
@@ -160,7 +160,7 @@ public class ScheduleHandler {
                     schedule.setStartDate(cursor.getString(cursor.getColumnIndex(SCHEDULE_START_DATE)));
                     schedule.setDuration(cursor.getString(cursor.getColumnIndex(SCHEDULE_DURATION)));
                     schedule.setIntake(cursor.getString(cursor.getColumnIndex(SCHEDULE_INTAKE)));
-                    schedule.setEnable(Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(SCHEDULE_IS_ENABLE))));
+                    schedule.setEnable(cursor.getString(cursor.getColumnIndex(SCHEDULE_IS_ENABLE)));
                     schedule.setUpdatedTime(Long.valueOf(cursor.getString(cursor.getColumnIndex(SCHEDULE_UPDATED_TIME))));
 
                     Alarm alarm = new Gson().fromJson(cursor.getString(cursor.getColumnIndex(SCHEDULE_ALARM)), Alarm.class);
