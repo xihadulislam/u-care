@@ -40,7 +40,14 @@ public class MyBroadCastReceiver extends BroadcastReceiver {
         Schedule schedule = new Gson().fromJson(intent.getStringExtra("schedule"), Schedule.class);
 
         if (schedule != null) {
-            playAlarm(context, schedule);
+
+            NotificationHelper notificationHelper = new NotificationHelper(context, schedule);
+            NotificationCompat.Builder nb = notificationHelper.getChannelNotification();
+            notificationHelper.getManager().notify(schedule.getAlarm().getId(), nb.build());
+            Utils.playRing(context);
+
+
+          //  playAlarm(context, schedule);
             Log.d(TAG, "onReceive: ");
         }
 
