@@ -205,7 +205,17 @@
 
             </LinearLayout>
 
-
+            <CheckBox
+                android:id="@+id/checkBox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select All"
+                android:textColor="#276ca4"
+                android:checked="false"
+                android:layout_gravity="end"
+                android:visibility="gone"
+                android:layout_marginRight="10dp"
+                android:onClick="checkbox_clicked" />
             <LinearLayout
                 android:id="@+id/Linear_days"
                 android:layout_width="wrap_content"
@@ -296,14 +306,7 @@
 
             </LinearLayout>
 
-<!--            <CheckBox-->
-<!--                android:id="@+id/checkBox1"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Fees Paid Rs100:"-->
-<!--                android:textColor="#276ca4"-->
-<!--                android:checked="false"-->
-<!--                android:onClick="checkbox_clicked" />-->
+
             <Button
                 android:id="@+id/save_button"
                 android:layout_width="match_parent"
