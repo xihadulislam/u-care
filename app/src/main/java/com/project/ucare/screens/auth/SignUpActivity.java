@@ -103,6 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
         textViewLogin.setOnClickListener(v1 -> {
             Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
             startActivity(intent);
+            finish();
 
         });
 

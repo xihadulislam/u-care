@@ -21,6 +21,7 @@ public class SqlDbHelper extends SQLiteOpenHelper {
     public static final String TABLE_SCHEDULE = "table_schedule";
     public static final String SCHEDULE_KEY_ID = "s_id";
     public static final String SCHEDULE_USER_ID = "s_userId";
+    public static final String SCHEDULE_USER_NAME = "s_userName";
     public static final String SCHEDULE_MEDICINE_NAME = "s_medicineName";
     public static final String SCHEDULE_MEDICINE_TYPE = "s_medicineType";
     public static final String SCHEDULE_MEDICINE_UNIT = "s_medicineUnit";
@@ -44,6 +45,7 @@ public class SqlDbHelper extends SQLiteOpenHelper {
     private static final String SCHEDULE_TABLE = "CREATE TABLE " + TABLE_SCHEDULE + " ("
             + SCHEDULE_KEY_ID + " TEXT PRIMARY KEY, "
             + SCHEDULE_USER_ID + " TEXT, "
+            + SCHEDULE_USER_NAME + " TEXT, "
             + SCHEDULE_MEDICINE_NAME + " TEXT, "
             + SCHEDULE_MEDICINE_TYPE + " TEXT, "
             + SCHEDULE_MEDICINE_UNIT + " TEXT, "

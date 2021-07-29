@@ -235,7 +235,6 @@ public class SettingsFragment extends Fragment {
 
     @Override
     public void onResume() {
-
         super.onResume();
     }
 
@@ -455,10 +454,12 @@ public class SettingsFragment extends Fragment {
                     }
                 }
 
+                pd.hide();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                pd.hide();
             }
         });
 

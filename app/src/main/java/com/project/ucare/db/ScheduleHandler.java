@@ -27,6 +27,7 @@ import static com.project.ucare.db.SqlDbHelper.SCHEDULE_MEDICINE_UNIT;
 import static com.project.ucare.db.SqlDbHelper.SCHEDULE_START_DATE;
 import static com.project.ucare.db.SqlDbHelper.SCHEDULE_UPDATED_TIME;
 import static com.project.ucare.db.SqlDbHelper.SCHEDULE_USER_ID;
+import static com.project.ucare.db.SqlDbHelper.SCHEDULE_USER_NAME;
 import static com.project.ucare.db.SqlDbHelper.TABLE_PROFILE;
 import static com.project.ucare.db.SqlDbHelper.TABLE_SCHEDULE;
 import static com.project.ucare.db.SqlDbHelper.UPDATED_TIME;
@@ -47,6 +48,7 @@ public class ScheduleHandler {
         ContentValues values = new ContentValues();
         values.put(SCHEDULE_KEY_ID, schedule.getId());
         values.put(SCHEDULE_USER_ID, schedule.getUserId());
+        values.put(SCHEDULE_USER_NAME, schedule.getUserName());
         values.put(SCHEDULE_MEDICINE_NAME, schedule.getMedicineName());
         values.put(SCHEDULE_MEDICINE_TYPE, schedule.getMedicineType());
         values.put(SCHEDULE_MEDICINE_UNIT, schedule.getMedicineUnit());
@@ -78,6 +80,7 @@ public class ScheduleHandler {
                     Schedule schedule = new Schedule();
                     schedule.setId(cursor.getString(cursor.getColumnIndex(SCHEDULE_KEY_ID)));
                     schedule.setUserId(cursor.getString(cursor.getColumnIndex(SCHEDULE_USER_ID)));
+                    schedule.setUserId(cursor.getString(cursor.getColumnIndex(SCHEDULE_USER_NAME)));
                     schedule.setMedicineName(cursor.getString(cursor.getColumnIndex(SCHEDULE_MEDICINE_NAME)));
                     schedule.setMedicineType(cursor.getString(cursor.getColumnIndex(SCHEDULE_MEDICINE_TYPE)));
                     schedule.setMedicineUnit(cursor.getString(cursor.getColumnIndex(SCHEDULE_MEDICINE_UNIT)));
@@ -116,6 +119,7 @@ public class ScheduleHandler {
 
                     schedule.setId(cursor.getString(cursor.getColumnIndex(SCHEDULE_KEY_ID)));
                     schedule.setUserId(cursor.getString(cursor.getColumnIndex(SCHEDULE_USER_ID)));
+                    schedule.setUserId(cursor.getString(cursor.getColumnIndex(SCHEDULE_USER_NAME)));
                     schedule.setMedicineName(cursor.getString(cursor.getColumnIndex(SCHEDULE_MEDICINE_NAME)));
                     schedule.setMedicineType(cursor.getString(cursor.getColumnIndex(SCHEDULE_MEDICINE_TYPE)));
                     schedule.setMedicineUnit(cursor.getString(cursor.getColumnIndex(SCHEDULE_MEDICINE_UNIT)));
