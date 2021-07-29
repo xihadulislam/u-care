@@ -36,6 +36,8 @@ public class CreateProfileActivity extends AppCompatActivity {
     String gender = "";
     Profile profile;
 
+    String isMain;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +54,10 @@ public class CreateProfileActivity extends AppCompatActivity {
 
         try {
             profile = (Profile) getIntent().getSerializableExtra("profile");
+            isMain = getIntent().getStringExtra("ismain");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         setEditData(profile);
 
@@ -70,7 +72,6 @@ public class CreateProfileActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
 
                 String myFormat = "MM/dd/yy";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -175,11 +176,29 @@ public class CreateProfileActivity extends AppCompatActivity {
     private void saveData(String name, String date, String gender) {
 
         String id = getId();
-        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
-        Profile profile = new Profile(id, userId, name, date, gender, System.currentTimeMillis());
-        FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(id).setValue(profile);
+        if (isMain != null && isMain.equalsIgnoreCase("yes")) {
+            saveMainProfile(id, name, date, gender);
+        } else {
+            String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
+            Profile profile = new Profile(id, userId, name, date, gender, System.currentTimeMillis());
+            FirebaseDatabase.getInstance().getReference().child("Profile").child(userId).child(id).setValue(profile);
+
+            ProfileHandler handler = new ProfileHandler(this);
+            long result = handler.addProfile(profile);
+            if (result > 0) {
+                Toast.makeText(this, "Data Updated Successfully", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+
+    }
+
+    private void saveMainProfile(String id, String name, String date, String gender) {
+
+        Profile profile = new Profile(id, "", name, date, gender, System.currentTimeMillis());
+        FirebaseDatabase.getInstance().getReference().child("User").child(id).setValue(profile);
         ProfileHandler handler = new ProfileHandler(this);
         long result = handler.addProfile(profile);
         if (result > 0) {

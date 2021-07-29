@@ -98,8 +98,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Pb_G_login.setVisibility(View.VISIBLE);
-                googleButton.setVisibility(View.GONE);
+
                 sinIn();
 
 
@@ -177,6 +176,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+
+        Pb_G_login.setVisibility(View.VISIBLE);
+        googleButton.setVisibility(View.GONE);
+
+
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -224,8 +228,8 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Pb_login.setVisibility(View.VISIBLE);
-                    loginButton.setVisibility(View.INVISIBLE);
+                    Pb_login.setVisibility(View.INVISIBLE);
+                    loginButton.setVisibility(View.VISIBLE);
                     Toast.makeText(LoginActivity.this, task.toString(), Toast.LENGTH_SHORT).show();
 
                 }

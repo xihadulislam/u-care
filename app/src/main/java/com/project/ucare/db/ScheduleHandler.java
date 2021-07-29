@@ -53,7 +53,7 @@ public class ScheduleHandler {
         values.put(SCHEDULE_START_DATE, schedule.getStartDate());
         values.put(SCHEDULE_DURATION, schedule.getDuration());
         values.put(SCHEDULE_INTAKE, schedule.getIntake());
-        values.put(SCHEDULE_IS_ENABLE, schedule.isEnable());
+        values.put(SCHEDULE_IS_ENABLE, schedule.getEnable());
         values.put(SCHEDULE_UPDATED_TIME, schedule.getUpdatedTime());
         values.put(SCHEDULE_ALARM, new Gson().toJson(schedule.getAlarm()));
 

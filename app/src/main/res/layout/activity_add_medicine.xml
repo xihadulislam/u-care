@@ -212,10 +212,11 @@
                 android:text="Select All"
                 android:textColor="#276ca4"
                 android:checked="false"
-                android:layout_gravity="end"
+                android:onClick="checkbox_clicked"
                 android:visibility="gone"
+                android:layout_gravity="end"
                 android:layout_marginRight="10dp"
-                android:onClick="checkbox_clicked" />
+                />
             <LinearLayout
                 android:id="@+id/Linear_days"
                 android:layout_width="wrap_content"

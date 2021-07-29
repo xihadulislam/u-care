@@ -133,12 +133,6 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
         } else {
             noData.setVisibility(View.GONE);
         }
-
-        for (Schedule schedule : scheduleListData) {
-
-            Log.d("TAG", "getLocalData: " + schedule.isEnable());
-        }
-
         adapter.setList(scheduleListData);
 
     }
@@ -174,18 +168,15 @@ public class ScheduleActivity extends AppCompatActivity implements ScheduleAdapt
 
         android.util.Log.d("TAG", "onSwitchClick: called ");
 
-        if (schedule.isEnable().equalsIgnoreCase("true")) {
-            AlarmHandler handler = new AlarmHandler(this, schedule);
+        AlarmHandler handler = new AlarmHandler(this, schedule);
+        if (schedule.getEnable().equalsIgnoreCase("true")) {
             handler.startAlarm(schedule.getAlarm().getHour(), schedule.getAlarm().getMinute());
-            scheduleHandler.addSchedule(schedule);
-            FirebaseDatabase.getInstance().getReference().child("Schedule").child(schedule.getId()).setValue(schedule);
         } else {
-            AlarmHandler handler = new AlarmHandler(this, schedule);
             handler.cancelAlarm();
-            scheduleHandler.addSchedule(schedule);
-            FirebaseDatabase.getInstance().getReference().child("Schedule").child(schedule.getId()).setValue(schedule);
 
         }
+        scheduleHandler.addSchedule(schedule);
+        FirebaseDatabase.getInstance().getReference().child("Schedule").child(schedule.getId()).setValue(schedule);
 
     }
 

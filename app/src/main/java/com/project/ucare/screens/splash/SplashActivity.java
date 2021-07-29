@@ -196,8 +196,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void syncSchedules() {
 
-
-        FirebaseDatabase.getInstance().getReference().child("Schedule").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Schedule").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -264,7 +263,6 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
                 startNext();
             }
         });

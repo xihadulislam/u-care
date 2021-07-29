@@ -394,8 +394,7 @@ public class SettingsFragment extends Fragment {
 
     private void syncSchedules() {
 
-
-        FirebaseDatabase.getInstance().getReference().child("Schedule").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("Schedule").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -456,15 +455,10 @@ public class SettingsFragment extends Fragment {
                     }
                 }
 
-
-                pd.cancel();
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-                pd.cancel();
             }
         });
 

@@ -67,14 +67,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         holder.labelUnit.setText("Unit : " + schedule.getMedicineUnit());
         holder.labelReminder.setText(schedule.getAlarm().getTitle());
 
-        Log.d("TAG", "onBindViewHolder: " + schedule.isEnable());
+        Log.d("TAG", "onBindViewHolder: " + schedule.getEnable());
 
-        if (schedule.isEnable().equalsIgnoreCase("true")) {
+        if (schedule.getEnable().equalsIgnoreCase("true")) {
             holder.switchId.setChecked(true);
-
         } else {
             holder.switchId.setChecked(false);
-
         }
 
 

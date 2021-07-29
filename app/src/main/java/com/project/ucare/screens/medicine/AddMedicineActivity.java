@@ -94,7 +94,8 @@ public class AddMedicineActivity extends AppCompatActivity {
     String edit = "";
     String medName = "";
     String medDuration = "";
-//    CheckBox fee_checkbox;
+ CheckBox fee_checkbox;
+    boolean isAllDaysSelected=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +110,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         tvWed = findViewById(R.id.wed);
         tvThu = findViewById(R.id.thu);
         tvFri = findViewById(R.id.friday);
-//        fee_checkbox =findViewById(R.id.checkBox1);
+    fee_checkbox =findViewById(R.id.checkBox1);
 
         Linear_days = findViewById(R.id.Linear_days);
         saveButton = findViewById(R.id.save_button);
@@ -180,9 +181,12 @@ public class AddMedicineActivity extends AppCompatActivity {
 
                         if (selectedTime != "") {
                             Linear_days.setVisibility(View.VISIBLE);
+                            fee_checkbox.setVisibility(View.VISIBLE);
                         } else {
                             Linear_days.setVisibility(View.GONE);
+                            fee_checkbox.setVisibility(View.GONE);
                         }
+
                     }
                 };
         etTimePicker.setOnClickListener(new View.OnClickListener() {
@@ -478,42 +482,54 @@ public class AddMedicineActivity extends AppCompatActivity {
         }
 
 
-        if (sat.equals("not") && sun.equals("not") && mon.equals("not") && tue.equals("not") && wed.equals("not") && thu.equals("not") && fri.equals("not")) {
-            Toast.makeText(AddMedicineActivity.this, "You must select a day", Toast.LENGTH_SHORT).show();
-            return;
+        if (!isAllDaysSelected){
+            if (sat.equals("not") && sun.equals("not") && mon.equals("not") && tue.equals("not") && wed.equals("not") && thu.equals("not") && fri.equals("not")) {
+                Toast.makeText(AddMedicineActivity.this, "You must select a day", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (!sat.equals("not")) {
+                daysList.add(sat);
+            }
+
+            if (!sun.equals("not")) {
+                daysList.add(sun);
+            }
+
+            if (!mon.equals("not")) {
+                daysList.add(mon);
+            }
+
+            if (!tue.equals("not")) {
+                daysList.add(tue);
+            }
+
+            if (!wed.equals("not")) {
+                daysList.add(wed);
+            }
+
+            if (!thu.equals("not")) {
+                daysList.add(thu);
+            }
+
+            if (!fri.equals("not")) {
+                daysList.add(fri);
+            }
+        }
+        else {
+            daysList.clear();
+            daysList.add("sat");
+            daysList.add("sun");
+            daysList.add("mon");
+            daysList.add("tue");
+            daysList.add("wed");
+            daysList.add("thu");
+            daysList.add("fri");
         }
 
 
         saveButton.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
-        if (!sat.equals("not")) {
-            daysList.add(sat);
-        }
-
-        if (!sun.equals("not")) {
-            daysList.add(sun);
-        }
-
-        if (!mon.equals("not")) {
-            daysList.add(mon);
-        }
-
-        if (!tue.equals("not")) {
-            daysList.add(tue);
-        }
-
-        if (!wed.equals("not")) {
-            daysList.add(wed);
-        }
-
-        if (!thu.equals("not")) {
-            daysList.add(thu);
-        }
-
-        if (!fri.equals("not")) {
-            daysList.add(fri);
-        }
 
 
         String id = getId();
@@ -525,6 +541,7 @@ public class AddMedicineActivity extends AppCompatActivity {
         } else {
             userId = AndroidUtils.sharePrefSettings.getStringValue("pro");
         }
+        String userName = AndroidUtils.sharePrefSettings.getStringValue("pro_name");
 
         String alar = new StringBuilder(id).reverse().toString();
 
@@ -535,7 +552,7 @@ public class AddMedicineActivity extends AppCompatActivity {
 
         alarm.setDays(daysList);
 
-        Schedule schedule = new Schedule(id, userId, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, "true", System.currentTimeMillis(), alarm);
+        Schedule schedule = new Schedule(id, userId,userName, medName, spTypeTx, spUnitTx, startDate, medDuration, medIntake, "true", System.currentTimeMillis(), alarm);
 
         FirebaseDatabase.getInstance().getReference().child("Schedule").child(id).setValue(schedule);
 
@@ -556,7 +573,6 @@ public class AddMedicineActivity extends AppCompatActivity {
             Toast.makeText(AddMedicineActivity.this, "Data Updated Failed", Toast.LENGTH_SHORT).show();
         }
 
-
     }
 
 
@@ -575,8 +591,10 @@ public class AddMedicineActivity extends AppCompatActivity {
 
             if (!selectedTime.equals("")) {
                 Linear_days.setVisibility(View.VISIBLE);
+                fee_checkbox.setVisibility(View.VISIBLE);
             } else {
                 Linear_days.setVisibility(View.GONE);
+                fee_checkbox.setVisibility(View.GONE);
             }
 
             alarm.setTitle(schedule.getAlarm().getTitle());
@@ -594,18 +612,35 @@ public class AddMedicineActivity extends AppCompatActivity {
         return id;
     }
 
-//    public void checkbox_clicked(View v)
-//    {
-//
-//        if(fee_checkbox.isChecked())
-//        {
-//            // true,do the task
-//
-//        }
-//        else
-//        {
-//
-//        }
-//
-//    }
+    public void checkbox_clicked(View v)
+    {
+
+        if(fee_checkbox.isChecked())
+        {
+            isAllDaysSelected=true;
+//            Toast.makeText(this, "checkbox_clicked "+isAllDaysSelected, Toast.LENGTH_SHORT).show();
+            // true,do the task
+            tvFri.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg_selected));
+            tvThu.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg_selected));
+            tvWed.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg_selected));
+            tvTue.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg_selected));
+            tvMon.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg_selected));
+            tvSun.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg_selected));
+            tvSat.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg_selected));
+        }
+        else
+        {
+            isAllDaysSelected=false;
+//            Toast.makeText(this, "checkbox not clicked "+isAllDaysSelected, Toast.LENGTH_SHORT).show();
+
+            tvFri.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg));
+            tvThu.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg));
+            tvWed.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg));
+            tvTue.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg));
+            tvMon.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg));
+            tvSun.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg));
+            tvSat.setBackground(ContextCompat.getDrawable(AddMedicineActivity.this, R.drawable.bt_days_bg));
+        }
+
+    }
 }

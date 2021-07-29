@@ -76,7 +76,7 @@ public class NotificationHelper extends ContextWrapper {
                 .addAction(R.mipmap.ic_launcher, "Snooze", actionSnPendingIntent)
                 .addAction(R.mipmap.ic_launcher, "Taking Now", actionTakePendingIntent)
                 .setContentTitle(schedule.getMedicineName())
-                .setContentText(schedule.getIntake())
+                .setContentText(schedule.getIntake()+"("+schedule.getUserName()+")")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setAutoCancel(false)
                 .setSound(null)

@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +48,7 @@ import java.util.Objects;
 public class HomeFragment extends Fragment implements ProfileAdapter.ProfileListener {
 
 
-    FloatingActionButton floatingActionButton;
+    ExtendedFloatingActionButton floatingActionButton;
 
     RecyclerView recyclerView;
 
@@ -159,6 +160,35 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
                     intent.putExtra("profile", profile);
                     startActivity(intent);
                     AndroidUtils.sharePrefSettings.setStringValue("pro", "");
+                    AndroidUtils.sharePrefSettings.setStringValue("pro_name", profile.getName());
+                }
+            });
+
+            profileRoot.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    PopupMenu popup = new PopupMenu(getActivity(), v, Gravity.RIGHT);
+                    popup.inflate(R.menu.menu_edit);
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            int itemId = item.getItemId();
+                            if (itemId == R.id.edit_profile) {
+                                Intent intent = new Intent(getActivity(), CreateProfileActivity.class);
+                                intent.putExtra("profile", profile);
+                                intent.putExtra("ismain","yes");
+                                startActivity(intent);
+
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                    popup.show();
+
+
+                    return false;
                 }
             });
         }
@@ -224,6 +254,7 @@ public class HomeFragment extends Fragment implements ProfileAdapter.ProfileList
     public void onProfileClick(Profile profile) {
 
         AndroidUtils.sharePrefSettings.setStringValue("pro", profile.getId());
+        AndroidUtils.sharePrefSettings.setStringValue("pro_name", profile.getName());
 
         Intent intent = new Intent(getActivity(), ScheduleActivity.class);
         intent.putExtra("profile", profile);
